@@ -3,6 +3,7 @@ using RealEstateApp.Services;
 using System;
 using System.Collections.ObjectModel;
 using TinyIoC;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -26,7 +27,7 @@ namespace RealEstateApp
         protected override void OnAppearing()
         {
             base.OnAppearing();
-
+            
             LoadProperties();
         }
 
@@ -37,13 +38,18 @@ namespace RealEstateApp
             list.IsRefreshing = false;
         }
 
-        void LoadProperties()
+        async void LoadProperties()
         {
             PropertiesCollection.Clear();
             var items = Repository.GetProperties();
-
+            Location location = await Geolocation.GetLocationAsync();
             foreach (Property item in items)
             {
+                if (item.Latitude != null && item.Longitude != null)
+                {
+                    item.Distance = location.CalculateDistance((double)item.Latitude, (double)item.Longitude, DistanceUnits.Kilometers);
+                }
+
                 PropertiesCollection.Add(new PropertyListItem(item));
             }
         }
@@ -56,6 +62,12 @@ namespace RealEstateApp
         private async void AddProperty_Clicked(object sender, EventArgs e)
         {
             await Navigation.PushAsync(new AddEditPropertyPage());
-        }    
+        }
+
+        private void btnSort_OnClick(object sender, EventArgs e)
+        {
+            // PropertiesCollection.
+            throw new NotImplementedException();
+        }
     }
 }

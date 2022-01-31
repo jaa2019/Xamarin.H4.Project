@@ -59,11 +59,11 @@
                         <Label Grid.Column="0"
                                x:Name="lblLong"
                                VerticalOptions="Center"
-                               Text="{Binding Property.Longitude}" />
+                               Text="{Binding Property.Longitude, Mode=TwoWay}" />
                         <Label Grid.Column="1"
                                x:Name="lblLat"
                                VerticalOptions="Center"
-                               Text="{Binding Property.Latitude}" />
+                               Text="{Binding Property.Latitude, Mode=TwoWay}" />
                         <Button Grid.Column="2"
                                 Clicked="btnLocation_OnClick"
                                 VerticalOptions="Center"

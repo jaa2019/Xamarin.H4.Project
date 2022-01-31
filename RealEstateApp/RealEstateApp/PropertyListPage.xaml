@@ -16,6 +16,13 @@
                                  Size="{StaticResource ToolbarIconSize}" />
             </ToolbarItem.IconImageSource>
         </ToolbarItem>
+        <ToolbarItem Clicked="btnSort_OnClick">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource FontFamily="FA-solid"
+                                 Glyph="{Static fa:IconFont.SortAmountUp}"
+                                 Size="{StaticResource ToolbarIconSize}" />
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
     </ContentPage.ToolbarItems>
 
     <StackLayout>
@@ -34,14 +41,10 @@
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
-                        <Grid
-                            Margin="0,0,0,20"
-                            Padding="20"
-                            BackgroundColor="White">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
+                        <Grid ColumnDefinitions="Auto, *"
+                              Margin="0,0,0,20"
+                              Padding="20"
+                              BackgroundColor="White" >
                             <Image
                                 Grid.Column="0"
                                 Margin="0,0,10,0"
@@ -49,65 +52,47 @@
                                 HeightRequest="120"
                                 HorizontalOptions="Start"
                                 Source="{Binding Property.MainImageUrl}" />
-                            <Grid Grid.Column="1" Margin="0,0,10,0">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                </Grid.RowDefinitions>
-                                <Label
-                                    Grid.Row="0"
-                                    FontAttributes="Bold"
-                                    FontSize="16"
-                                    LineBreakMode="TailTruncation"
-                                    Text="{Binding Property.Address}" />
-                                <Label
-                                    Grid.Row="1"
-                                    FontSize="13"
-                                    LineBreakMode="NoWrap"
-                                    Text="{Binding Property.Price, StringFormat='{0:C0}'}" />
-                                <Grid Grid.Row="2">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="Auto" />
-                                    </Grid.ColumnDefinitions>
-                                    <Label
-                                        Grid.Column="0"
-                                        FontSize="15"
-                                        FontFamily="FA-solid"
-                                        Text="{x:Static fa:IconFont.Bed}" />
-                                    <Label
-                                        Grid.Column="1"
-                                        FontSize="13"
-                                        Text="{Binding Property.Beds}" />
-                                    <Label
-                                        Grid.Column="2"
-                                        FontSize="15"
-                                        FontFamily="FA-solid"
-                                        Text="{x:Static fa:IconFont.Bath}" />
-                                    <Label
-                                        Grid.Column="3"
-                                        FontSize="13"
-                                        Text="{Binding Property.Baths}" />
-                                    <Label
-                                        Grid.Column="4"
-                                        FontSize="15"
-                                        FontFamily="FA-solid"
-                                        Text="{x:Static fa:IconFont.Parking}" />
-                                    <Label
-                                        Grid.Column="5"
-                                        FontSize="13"
-                                        Text="{Binding Property.Parking}" />
+                            <Grid Grid.Column="1"
+                                  RowDefinitions="Auto, Auto, Auto, Auto, Auto"
+                                  Margin="0,0,10,0">
+                                <Label Grid.Row="0"
+                                       FontAttributes="Bold"
+                                       FontSize="16"
+                                       LineBreakMode="TailTruncation"
+                                       Text="{Binding Property.Address}" />
+                                <Label Grid.Row="1" 
+                                       FontSize="13" 
+                                       LineBreakMode="NoWrap" 
+                                       Text="{Binding Property.Price, StringFormat='{0:C0}'}" />
+                                <Grid Grid.Row="2" 
+                                      ColumnDefinitions="Auto, Auto, Auto, Auto, Auto, Auto">
+                                    <Label Grid.Column="0"
+                                           FontSize="15"
+                                           FontFamily="FA-solid"
+                                           Text="{x:Static fa:IconFont.Bed}" />
+                                    <Label Grid.Column="1"
+                                           FontSize="13"
+                                           Text="{Binding Property.Beds}" />
+                                    <Label Grid.Column="2"
+                                           FontSize="15"
+                                           FontFamily="FA-solid"
+                                           Text="{x:Static fa:IconFont.Bath}" />
+                                    <Label Grid.Column="3"
+                                           FontSize="13"
+                                           Text="{Binding Property.Baths}" />
+                                    <Label Grid.Column="4"
+                                           FontSize="15"
+                                           FontFamily="FA-solid"
+                                           Text="{x:Static fa:IconFont.Parking}" />
+                                    <Label Grid.Column="5"
+                                           FontSize="13"
+                                           Text="{Binding Property.Parking}" />
                                 </Grid>
-                                <Label
-                                    Grid.Row="3"
-                                    FontSize="13"
-                                    Text="{Binding Property.LandSize, StringFormat='Land Size: {0} &#x33a1;'}" />
+                                <Label Grid.Row="3"
+                                       FontSize="13"
+                                       Text="{Binding Property.LandSize, StringFormat='Land Size: {0} &#x33a1;'}" />
+                                <Label Grid.Row="4" 
+                                       Text="{Binding Property.Distance, StringFormat='{0}km away'}"/>
                             </Grid>
                         </Grid>
                     </ViewCell>
