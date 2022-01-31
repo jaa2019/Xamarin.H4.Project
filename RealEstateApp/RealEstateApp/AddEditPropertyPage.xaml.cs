@@ -1,8 +1,11 @@
-﻿using RealEstateApp.Models;
+﻿using System;
+using RealEstateApp.Models;
 using RealEstateApp.Services;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Linq;
 using TinyIoC;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -100,6 +103,30 @@ namespace RealEstateApp
         private async void CancelSave_Clicked(object sender, System.EventArgs e)
         {
             await Navigation.PopToRootAsync();
+        }
+
+        private async void btnLocation_OnClick(object sender, EventArgs e)
+        {
+            Location location = null;
+            try
+            {
+                location = await Geolocation.GetLocationAsync();
+            }
+            catch (FeatureNotSupportedException ex)
+            {
+                await DisplayAlert("Location", ex.Message, "Ok");
+            }
+            catch (FeatureNotEnabledException ex)
+            {
+                await DisplayAlert("Location", "You need to enable location services to use this function", "Ok");
+            }
+            catch (PermissionException ex)
+            {
+                await DisplayAlert("Location", "You have denied this app to have permission to use location services", "Ok");
+            }
+
+            lblLat.Text = location?.Latitude.ToString(CultureInfo.InvariantCulture);
+            lblLong.Text = location?.Longitude.ToString(CultureInfo.CurrentCulture);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8"?>
+
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
@@ -38,14 +39,14 @@
                     <Label FontSize="Medium" FontFamily="FA-solid">
                         <Label.FormattedText>
                             <FormattedString>
-                                <Span Text="{Static fa:IconFont.Home}"/>
+                                <Span Text="{Static fa:IconFont.Home}" />
                                 <Span Text=" " />
                                 <Span Text="Address*" />
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
                     <Entry FontSize="Medium" Text="{Binding Property.Address}" />
-                    
+
                     <Label FontSize="Medium" FontFamily="FA-solid">
                         <Label.FormattedText>
                             <FormattedString>
@@ -54,11 +55,28 @@
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
-
+                    <Grid ColumnDefinitions="2*, 2*, *">
+                        <Label Grid.Column="0"
+                               x:Name="lblLong"
+                               VerticalOptions="Center"
+                               Text="{Binding Property.Longitude}" />
+                        <Label Grid.Column="1"
+                               x:Name="lblLat"
+                               VerticalOptions="Center"
+                               Text="{Binding Property.Latitude}" />
+                        <Button Grid.Column="2"
+                                Clicked="btnLocation_OnClick"
+                                VerticalOptions="Center"
+                                WidthRequest="90"
+                                BackgroundColor="Blue"
+                                TextColor="WhiteSmoke"
+                                FontFamily="FA-solid"
+                                Text="{Static fa:IconFont.MapPin}" />
+                    </Grid>
                     <Label FontSize="Medium" FontFamily="FA-solid">
                         <Label.FormattedText>
                             <FormattedString>
-                                <Span Text="{Static fa:IconFont.Tag}"/>
+                                <Span Text="{Static fa:IconFont.Tag}" />
                                 <Span Text=" " />
                                 <Span Text="Price" />
                             </FormattedString>
@@ -70,7 +88,7 @@
                     <Label FontSize="Medium" FontFamily="FA-solid">
                         <Label.FormattedText>
                             <FormattedString>
-                                <Span Text="{Static fa:IconFont.Bed}"/>
+                                <Span Text="{Static fa:IconFont.Bed}" />
                                 <Span Text=" " />
                                 <Span Text="Bedrooms*" />
                             </FormattedString>
@@ -82,10 +100,10 @@
                         ReturnType="Next"
                         Text="{Binding Property.Beds, Converter={converters:NullableIntConverter}}" />
 
-                    <Label FontSize="Medium"  FontFamily="FA-solid">
+                    <Label FontSize="Medium" FontFamily="FA-solid">
                         <Label.FormattedText>
                             <FormattedString>
-                                <Span Text="{Static fa:IconFont.Bath}"/>
+                                <Span Text="{Static fa:IconFont.Bath}" />
                                 <Span Text=" " />
                                 <Span Text="Bathroom" />
                             </FormattedString>
@@ -100,7 +118,7 @@
                     <Label FontSize="Medium" FontFamily="FA-solid">
                         <Label.FormattedText>
                             <FormattedString>
-                                <Span Text="{Static fa:IconFont.Parking}"/>
+                                <Span Text="{Static fa:IconFont.Parking}" />
                                 <Span Text=" " />
                                 <Span Text="Parking" />
                             </FormattedString>
@@ -111,15 +129,15 @@
                         Keyboard="Numeric"
                         ReturnType="Next"
                         Text="{Binding Property.Parking, Converter={converters:NullableIntConverter}}" />
-                    
+
                     <Label FontSize="Medium" FontFamily="FA-solid">
                         <Label.FormattedText>
                             <FormattedString>
-                                <Span Text="{Static fa:IconFont.Square}"/>
+                                <Span Text="{Static fa:IconFont.Square}" />
                                 <Span Text=" " />
-                                <Span Text="Land Size"/>
-                                <Span Text=" "/>
-                                <Span Text="(&#x33a1;)"/>
+                                <Span Text="Land Size" />
+                                <Span Text=" " />
+                                <Span Text="(&#x33a1;)" />
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
@@ -128,11 +146,11 @@
                         Keyboard="Numeric"
                         ReturnType="Next"
                         Text="{Binding Property.LandSize, Converter={converters:NullableIntConverter}}" />
-                    
+
                     <Label FontSize="Medium" FontFamily="FA-solid">
                         <Label.FormattedText>
                             <FormattedString>
-                                <Span Text="{Static fa:IconFont.FileAlt}"/>
+                                <Span Text="{Static fa:IconFont.FileAlt}" />
                                 <Span Text=" " />
                                 <Span Text="Description" />
                             </FormattedString>
@@ -144,10 +162,10 @@
                         HeightRequest="50"
                         Text="{Binding Property.Description}" />
 
-                    <Label FontSize="Medium" FontFamily="FA-solid" >
+                    <Label FontSize="Medium" FontFamily="FA-solid">
                         <Label.FormattedText>
                             <FormattedString>
-                                <Span Text="{Static fa:IconFont.UserTie}"/>
+                                <Span Text="{Static fa:IconFont.UserTie}" />
                                 <Span Text=" " />
                                 <Span Text="Agent*" />
                             </FormattedString>
