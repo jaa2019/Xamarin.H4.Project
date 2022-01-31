@@ -2,6 +2,9 @@
 using RealEstateApp.Services;
 using System;
 using System.Collections.ObjectModel;
+using System.Linq;
+using System.Threading.Tasks;
+using FontAwesome;
 using TinyIoC;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -12,8 +15,11 @@ namespace RealEstateApp
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class PropertyListPage : ContentPage
     {
+        private bool sorting = false;
         IRepository Repository;
-        public ObservableCollection<PropertyListItem> PropertiesCollection { get; } = new ObservableCollection<PropertyListItem>(); 
+
+        public ObservableCollection<PropertyListItem> PropertiesCollection { get; } =
+            new ObservableCollection<PropertyListItem>();
 
         public PropertyListPage()
         {
@@ -21,53 +27,68 @@ namespace RealEstateApp
 
             Repository = TinyIoCContainer.Current.Resolve<IRepository>();
             LoadProperties();
-            BindingContext = this; 
+            BindingContext = this;
+
+            RefreshView.Command = new Command(OnRefresh);
         }
 
         protected override void OnAppearing()
         {
             base.OnAppearing();
-            
+
             LoadProperties();
         }
 
-        void OnRefresh(object sender, EventArgs e)
+        private async void OnRefresh()
         {
-            var list = (ListView)sender;
-            LoadProperties();
-            list.IsRefreshing = false;
+            LoadProperties(sorting);
+            await Task.Delay(500);
+            RefreshView.IsRefreshing = false;
         }
 
-        async void LoadProperties()
+        private async void LoadProperties(bool sortDesc = false)
         {
             PropertiesCollection.Clear();
             var items = Repository.GetProperties();
-            Location location = await Geolocation.GetLocationAsync();
-            foreach (Property item in items)
+            Location location = await Geolocation.GetLastKnownLocationAsync() ?? await Geolocation.GetLocationAsync();
+            foreach (var item in items.Where(item => item.Latitude != null && item.Longitude != null))
             {
-                if (item.Latitude != null && item.Longitude != null)
-                {
-                    item.Distance = location.CalculateDistance((double)item.Latitude, (double)item.Longitude, DistanceUnits.Kilometers);
-                }
+                item.Distance = location.CalculateDistance((double)item.Latitude, (double)item.Longitude,
+                    DistanceUnits.Kilometers);
+            }
 
-                PropertiesCollection.Add(new PropertyListItem(item));
+            if (!sortDesc)
+            {
+                foreach (var item in items.OrderBy(p => p.Distance))
+                {
+                    PropertiesCollection.Add(new PropertyListItem(item));
+                }
+            }
+            else
+            {
+                foreach (var item in items.OrderByDescending(p => p.Distance))
+                {
+                    PropertiesCollection.Add(new PropertyListItem(item));
+                }
             }
         }
 
-        private async void ItemsListView_ItemTapped(object sender, ItemTappedEventArgs e)
+        private void btnSort_OnClick(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new PropertyDetailPage(e.Item as PropertyListItem));
+            LoadProperties(sorting);
+            FontImageSource icon = (FontImageSource)btnSort.IconImageSource;
+            icon.Glyph = sorting ? IconFont.SortAmountUp : IconFont.SortAmountDown;
+            sorting = !sorting;
+        }
+
+        private async void CollectionView_OnClick(object sender, SelectionChangedEventArgs e)
+        {
+            await Navigation.PushAsync(new PropertyDetailPage((PropertyListItem)e.CurrentSelection.FirstOrDefault()));
         }
 
         private async void AddProperty_Clicked(object sender, EventArgs e)
         {
             await Navigation.PushAsync(new AddEditPropertyPage());
-        }
-
-        private void btnSort_OnClick(object sender, EventArgs e)
-        {
-            // PropertiesCollection.
-            throw new NotImplementedException();
         }
     }
 }

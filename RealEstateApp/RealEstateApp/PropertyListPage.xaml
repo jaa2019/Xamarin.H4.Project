@@ -16,35 +16,30 @@
                                  Size="{StaticResource ToolbarIconSize}" />
             </ToolbarItem.IconImageSource>
         </ToolbarItem>
-        <ToolbarItem Clicked="btnSort_OnClick">
+        <ToolbarItem Clicked="btnSort_OnClick" x:Name="btnSort">
             <ToolbarItem.IconImageSource>
                 <FontImageSource FontFamily="FA-solid"
-                                 Glyph="{Static fa:IconFont.SortAmountUp}"
+                                 Glyph="{Static fa:IconFont.SortAmountDown}"
                                  Size="{StaticResource ToolbarIconSize}" />
             </ToolbarItem.IconImageSource>
         </ToolbarItem>
     </ContentPage.ToolbarItems>
 
-    <StackLayout>
-        <ListView
+    <RefreshView x:Name="RefreshView">
+        <CollectionView
             x:Name="ItemsListView"
             BackgroundColor="LightGray"
-            CachingStrategy="RecycleElement"
-            HasUnevenRows="true"
-            IsPullToRefreshEnabled="true"
-            RefreshControlColor=" Color.Red"
-            IsRefreshing="{Binding IsBusy, Mode=OneWay}"
-            Refreshing="OnRefresh"
-            ItemTapped="ItemsListView_ItemTapped"
+            SelectionMode="Single"
+            SelectionChanged="CollectionView_OnClick"
             ItemsSource="{Binding PropertiesCollection}"
             VerticalOptions="FillAndExpand">
-            <ListView.ItemTemplate>
+            <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <ViewCell>
+                    <ContentView>
                         <Grid ColumnDefinitions="Auto, *"
                               Margin="0,0,0,20"
                               Padding="20"
-                              BackgroundColor="White" >
+                              BackgroundColor="White">
                             <Image
                                 Grid.Column="0"
                                 Margin="0,0,10,0"
@@ -60,11 +55,11 @@
                                        FontSize="16"
                                        LineBreakMode="TailTruncation"
                                        Text="{Binding Property.Address}" />
-                                <Label Grid.Row="1" 
-                                       FontSize="13" 
-                                       LineBreakMode="NoWrap" 
+                                <Label Grid.Row="1"
+                                       FontSize="13"
+                                       LineBreakMode="NoWrap"
                                        Text="{Binding Property.Price, StringFormat='{0:C0}'}" />
-                                <Grid Grid.Row="2" 
+                                <Grid Grid.Row="2"
                                       ColumnDefinitions="Auto, Auto, Auto, Auto, Auto, Auto">
                                     <Label Grid.Column="0"
                                            FontSize="15"
@@ -91,13 +86,13 @@
                                 <Label Grid.Row="3"
                                        FontSize="13"
                                        Text="{Binding Property.LandSize, StringFormat='Land Size: {0} &#x33a1;'}" />
-                                <Label Grid.Row="4" 
-                                       Text="{Binding Property.Distance, StringFormat='{0}km away'}"/>
+                                <Label Grid.Row="4"
+                                       Text="{Binding Property.Distance, StringFormat='{0:N0}km away'}" />
                             </Grid>
                         </Grid>
-                    </ViewCell>
+                    </ContentView>
                 </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
-    </StackLayout>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </RefreshView>
 </ContentPage>
