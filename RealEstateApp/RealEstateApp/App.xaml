@@ -14,6 +14,9 @@
                 <Setter Property="BarBackgroundColor" Value="{StaticResource NavigationPrimary}" />
                 <Setter Property="BarTextColor" Value="White" />
             </Style>
+            
+            <x:Double x:Key="ToolbarIconSize">25</x:Double>
+            
         </ResourceDictionary>
     </Application.Resources>
 </Application>

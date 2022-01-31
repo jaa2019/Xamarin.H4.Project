@@ -10,8 +10,20 @@
              Title="{Binding Title}">
 
     <ContentPage.ToolbarItems>
-        <ToolbarItem Clicked="CancelSave_Clicked" Text="Cancel" />
-        <ToolbarItem Clicked="SaveProperty_Clicked" Text="Save" />
+        <ToolbarItem Clicked="CancelSave_Clicked">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource FontFamily="FA-solid"
+                                 Glyph="{Static fa:IconFont.Trash}"
+                                 Size="{StaticResource ToolbarIconSize}" />
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+        <ToolbarItem Clicked="SaveProperty_Clicked">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource FontFamily="FA-solid"
+                                 Glyph="{Static fa:IconFont.Save}"
+                                 Size="{StaticResource ToolbarIconSize}" />
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
     </ContentPage.ToolbarItems>
 
     <ContentPage.Content>
@@ -33,6 +45,15 @@
                         </Label.FormattedText>
                     </Label>
                     <Entry FontSize="Medium" Text="{Binding Property.Address}" />
+                    
+                    <Label FontSize="Medium" FontFamily="FA-solid">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="{Static fa:IconFont.LocationArrow}" />
+                                <Span Text=" Location" />
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
 
                     <Label FontSize="Medium" FontFamily="FA-solid">
                         <Label.FormattedText>
