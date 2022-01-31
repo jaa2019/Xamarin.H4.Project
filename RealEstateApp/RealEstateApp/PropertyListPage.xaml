@@ -8,7 +8,7 @@
              x:Class="RealEstateApp.PropertyListPage">
 
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Add" Clicked="AddProperty_Clicked" />
+        <ToolbarItem Text="+" Clicked="AddProperty_Clicked" />
     </ContentPage.ToolbarItems>
     
     <StackLayout>

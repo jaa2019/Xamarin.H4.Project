@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<Shell xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:realEstateApp="clr-namespace:RealEstateApp;assembly=RealEstateApp"
+             x:Class="RealEstateApp.AppShell"
+             TabBarIsVisible="False">
+       
+    <FlyoutItem FlyoutDisplayOptions="AsMultipleItems">
+        <ShellContent Title="Properties" ContentTemplate="{DataTemplate realEstateApp:PropertyListPage}" />
+        <ShellContent Title="About" ContentTemplate="{DataTemplate realEstateApp:AboutPage}" />
+        <!-- <ShellContent Title="PieOverview" Icon="pie.png" ContentTemplate="{DataTemplate views:PieOverview}" /> -->
+    </FlyoutItem>
+</Shell>
