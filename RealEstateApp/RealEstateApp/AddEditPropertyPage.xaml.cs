@@ -4,6 +4,9 @@ using RealEstateApp.Services;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
+using System.Net.Mime;
+using System.Threading;
+using System.Threading.Tasks;
 using TinyIoC;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -18,8 +21,14 @@ namespace RealEstateApp
 
         #region PROPERTIES
 
-        public ObservableCollection<Agent> Agents { get; }
+        private bool _flashOn;
         private Location _location;
+        private bool _onScreen = false;
+        public string StatusMessage { get; set; }
+        public Color StatusFont { get; set; }
+        public Color StatusColor { get; set; } = Color.White;
+        public ObservableCollection<Agent> Agents { get; }
+
         private Property _property;
 
         public Property Property
@@ -50,10 +59,6 @@ namespace RealEstateApp
             }
         }
 
-        public string StatusMessage { get; set; }
-
-        public Color StatusColor { get; set; } = Color.White;
-
         #endregion
 
         public AddEditPropertyPage(Property property = null)
@@ -81,10 +86,7 @@ namespace RealEstateApp
         {
             if (IsValid() == false)
             {
-                StatusMessage = "Please fill in all required fields";
-                Vibration.Vibrate(2000);
-
-                StatusColor = Color.Red;
+                SetStatus("Please fill in all the required fields", Color.Red);
             }
             else
             {
@@ -161,9 +163,17 @@ namespace RealEstateApp
                     Property.Longitude = location.FirstOrDefault().Longitude;
                     Property.Latitude = location.FirstOrDefault().Latitude;
                 }
-                catch (Exception exception)
+                catch (Exception ex)
                 {
-                    await DisplayAlert("Oi! This is weird ...", exception.Message, "Ok");
+                    if (ex.GetType().Name == "NSErrorException")
+                    {
+                        await DisplayAlert("Hey...", "It looks like we couldn't find the address. Please try again",
+                            "Ok");
+                    }
+                    else
+                    {
+                        await DisplayAlert("Oi! This is weird ...", ex.Message, "Ok");
+                    }
                 }
             }
         }
@@ -174,6 +184,7 @@ namespace RealEstateApp
             try
             {
                 _location = await Geolocation.GetLastKnownLocationAsync() ?? await Geolocation.GetLocationAsync();
+                SetStatus("Trying to locate location", Color.Aqua);
             }
             catch (FeatureNotSupportedException ex)
             {
@@ -196,7 +207,7 @@ namespace RealEstateApp
             {
                 if (longPress)
                 {
-                   HapticFeedback.Perform(HapticFeedbackType.LongPress);
+                    HapticFeedback.Perform(HapticFeedbackType.LongPress);
                 }
                 else
                 {
@@ -204,7 +215,48 @@ namespace RealEstateApp
                 }
             }
             catch (Exception)
-            { }
+            {
+            }
+        }
+
+        private void Flashlight_OnClick(object sender, EventArgs e)
+        {
+            if (Battery.ChargeLevel < 0.2) // Doesn't allow user to turn on flashlight if the user is below 20%
+            {
+                SetStatus("Battery level is below 20%, and not charging", Color.Red, Color.WhiteSmoke);
+            }
+            else if (Battery.ChargeLevel < 0.2 && Battery.State == BatteryState.Charging)
+            {
+                SetStatus($"Battery level is below 20%, but charging - flashlight {_flashOn.ToString()}", Color.Gold);
+            }
+            else
+            {
+                if (!_flashOn)
+                {
+                    SetStatus("Flashlight on", Color.Gold);
+                    Flashlight.TurnOnAsync();
+                }
+                else
+                {
+                    SetStatus("Flashlight off", Color.Blue, Color.WhiteSmoke);
+                    Flashlight.TurnOffAsync();
+                }
+            }
+
+            _flashOn = !_flashOn;
+        }
+
+        private async void SetStatus(string message, Color colour, Color fontColour = default)
+        {
+            if (_onScreen) return; // Discards the message if there's a message on screen
+            _onScreen = true;
+            StatusColor = colour;
+            StatusFont = fontColour;
+            StatusMessage = message;
+            Vibration.Vibrate(1000);
+            await Task.Delay(2000);
+            _onScreen = false;
+            StatusMessage = "";
         }
     }
 }

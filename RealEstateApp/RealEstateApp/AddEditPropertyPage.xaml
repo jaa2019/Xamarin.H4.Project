@@ -11,6 +11,13 @@
              Title="{Binding Title}">
 
     <ContentPage.ToolbarItems>
+        <ToolbarItem Clicked="Flashlight_OnClick">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource FontFamily="FA-solid"
+                                 Glyph="{Static fa:IconFont.Lightbulb}"
+                                 Size="{StaticResource ToolbarIconSize}" />
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
         <ToolbarItem Clicked="CancelSave_Clicked">
             <ToolbarItem.IconImageSource>
                 <FontImageSource FontFamily="FA-solid"
@@ -29,10 +36,10 @@
 
     <ContentPage.Content>
         <StackLayout BackgroundColor="#E8E8E8">
-            <Label
-                BackgroundColor="{Binding StatusColor}"
-                IsVisible="{Binding StatusMessage, Converter={converters:StringBoolConverter}}"
-                Text="{Binding StatusMessage}" />
+            <Label BackgroundColor="{Binding StatusColor}"
+                   TextColor="{Binding StatusFont}"
+                   IsVisible="{Binding StatusMessage, Converter={converters:StringBoolConverter}}"
+                   Text="{Binding StatusMessage}" />
             <ScrollView VerticalOptions="FillAndExpand">
                 <StackLayout Padding="15" Spacing="20">
 
