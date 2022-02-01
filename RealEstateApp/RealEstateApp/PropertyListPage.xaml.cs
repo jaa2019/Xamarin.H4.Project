@@ -64,6 +64,7 @@ namespace RealEstateApp
 
         private async void OnRefresh()
         {
+            Feedback();
             LoadProperties(_sorting);
             await Task.Delay(500);
             RefreshView.IsRefreshing = false;
@@ -102,6 +103,7 @@ namespace RealEstateApp
 
         private void btnSort_OnClick(object sender, EventArgs e)
         {
+            Feedback();
             LoadProperties(_sorting);
             FontImageSource icon = (FontImageSource)btnSort.IconImageSource;
             icon.Glyph = _sorting ? IconFont.SortAmountUp : IconFont.SortAmountDown;
@@ -111,12 +113,32 @@ namespace RealEstateApp
 
         private async void CollectionView_OnClick(object sender, SelectionChangedEventArgs e)
         {
+            Feedback();
             await Navigation.PushAsync(new PropertyDetailPage((PropertyListItem)e.CurrentSelection.FirstOrDefault()));
         }
 
         private async void AddProperty_Clicked(object sender, EventArgs e)
         {
+            Feedback(true);
             await Navigation.PushAsync(new AddEditPropertyPage());
+        }
+        
+        
+        private void Feedback(bool longPress = false)
+        {
+            try
+            {
+                if (longPress)
+                {
+                    HapticFeedback.Perform(HapticFeedbackType.LongPress);
+                }
+                else
+                {
+                    HapticFeedback.Perform();
+                }
+            }
+            catch (Exception)
+            { }
         }
     }
 }

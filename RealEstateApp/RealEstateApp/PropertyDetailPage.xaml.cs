@@ -1,7 +1,9 @@
-﻿using RealEstateApp.Models;
+﻿using System;
+using RealEstateApp.Models;
 using RealEstateApp.Services;
 using System.Linq;
 using TinyIoC;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -28,7 +30,25 @@ namespace RealEstateApp
 
         private async void EditProperty_Clicked(object sender, System.EventArgs e)
         {
+            Feedback(true);
             await Navigation.PushAsync(new AddEditPropertyPage(Property));
+        }
+        
+        private void Feedback(bool longPress = false)
+        {
+            try
+            {
+                if (longPress)
+                {
+                    HapticFeedback.Perform(HapticFeedbackType.LongPress);
+                }
+                else
+                {
+                    HapticFeedback.Perform();
+                }
+            }
+            catch (Exception)
+            { }
         }
     }
 }

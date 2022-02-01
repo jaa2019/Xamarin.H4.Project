@@ -17,9 +17,11 @@ namespace RealEstateApp
         private IRepository Repository;
 
         #region PROPERTIES
+
         public ObservableCollection<Agent> Agents { get; }
         private Location _location;
         private Property _property;
+
         public Property Property
         {
             get => _property;
@@ -30,10 +32,9 @@ namespace RealEstateApp
                 {
                     SelectedAgent = Agents.FirstOrDefault(x => x.Id == _property?.AgentId);
                 }
-               
             }
         }
-    
+
         private Agent _selectedAgent;
 
         public Agent SelectedAgent
@@ -45,13 +46,14 @@ namespace RealEstateApp
                 {
                     _selectedAgent = value;
                     Property.AgentId = _selectedAgent?.Id;
-                }                 
+                }
             }
         }
 
         public string StatusMessage { get; set; }
 
         public Color StatusColor { get; set; } = Color.White;
+
         #endregion
 
         public AddEditPropertyPage(Property property = null)
@@ -71,7 +73,7 @@ namespace RealEstateApp
                 Title = "Edit Property";
                 Property = property;
             }
-         
+
             BindingContext = this;
         }
 
@@ -80,22 +82,27 @@ namespace RealEstateApp
             if (IsValid() == false)
             {
                 StatusMessage = "Please fill in all required fields";
+                Vibration.Vibrate(2000);
+
                 StatusColor = Color.Red;
             }
             else
             {
+                Feedback();
                 Repository.SaveProperty(Property);
                 await Navigation.PopToRootAsync();
-            }   
+            }
         }
 
         private bool IsValid()
         {
-            return !string.IsNullOrEmpty(Property.Address) && Property.Beds != null && Property.Price != null && Property.AgentId != null;
+            return !string.IsNullOrEmpty(Property.Address) && Property.Beds != null && Property.Price != null &&
+                   Property.AgentId != null;
         }
 
         private async void CancelSave_Clicked(object sender, System.EventArgs e)
         {
+            Feedback();
             await Navigation.PopToRootAsync();
         }
 
@@ -103,6 +110,7 @@ namespace RealEstateApp
         {
             try
             {
+                Feedback();
                 if (_location == null) GetLocationFromSystem();
                 lblLat.Text = _location?.Latitude.ToString(CultureInfo.InvariantCulture);
                 lblLong.Text = _location?.Longitude.ToString(CultureInfo.CurrentCulture);
@@ -124,7 +132,8 @@ namespace RealEstateApp
             }
             catch (PermissionException ex)
             {
-                await DisplayAlert("Location", "You have denied this app to have permission to use location services", "Ok");
+                await DisplayAlert("Location", "You have denied this app to have permission to use location services",
+                    "Ok");
             }
         }
 
@@ -132,18 +141,22 @@ namespace RealEstateApp
         {
             if (string.IsNullOrWhiteSpace(Property.Address))
             {
+                Feedback(true);
                 await DisplayAlert("Hey!", "Address field cannot be blank", "Ok");
             }
             else
             {
                 if (Connectivity.NetworkAccess != NetworkAccess.Internet)
                 {
+                    Feedback(true);
                     await DisplayAlert("Hmm...",
                         "It looks like you no longer have internet connectivity. Please try again", "Ok");
                     return;
                 }
+
                 try
                 {
+                    Feedback();
                     var location = await Geocoding.GetLocationsAsync(Property.Address);
                     Property.Longitude = location.FirstOrDefault().Longitude;
                     Property.Latitude = location.FirstOrDefault().Latitude;
@@ -154,6 +167,7 @@ namespace RealEstateApp
                 }
             }
         }
+
         private async void GetLocationFromSystem()
         {
             _location = null;
@@ -174,6 +188,23 @@ namespace RealEstateApp
                 await DisplayAlert("Location", "You have denied this app to have permission to use location services",
                     "Ok");
             }
+        }
+
+        private void Feedback(bool longPress = false)
+        {
+            try
+            {
+                if (longPress)
+                {
+                   HapticFeedback.Perform(HapticFeedbackType.LongPress);
+                }
+                else
+                {
+                    HapticFeedback.Perform();
+                }
+            }
+            catch (Exception)
+            { }
         }
     }
 }
