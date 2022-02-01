@@ -57,7 +57,7 @@ namespace RealEstateApp
         public AddEditPropertyPage(Property property = null)
         {
             InitializeComponent();
-
+            btnAdress.IsEnabled = false || Connectivity.NetworkAccess == NetworkAccess.Internet;
             Repository = TinyIoCContainer.Current.Resolve<IRepository>();
             Agents = new ObservableCollection<Agent>(Repository.GetAgents());
 
@@ -89,15 +89,9 @@ namespace RealEstateApp
             }   
         }
 
-        public bool IsValid()
+        private bool IsValid()
         {
-            if (string.IsNullOrEmpty(Property.Address)
-                || Property.Beds == null
-                || Property.Price == null
-                || Property.AgentId == null)
-                return false;
-
-            return true;
+            return !string.IsNullOrEmpty(Property.Address) && Property.Beds != null && Property.Price != null && Property.AgentId != null;
         }
 
         private async void CancelSave_Clicked(object sender, System.EventArgs e)
@@ -137,10 +131,18 @@ namespace RealEstateApp
 
         private async void btnAdress_OnClick(object sender, EventArgs e)
         {
-            if (String.IsNullOrWhiteSpace(Property.Address))
+            if (string.IsNullOrWhiteSpace(Property.Address))
+            {
                 await DisplayAlert("Hey!", "Address field cannot be blank", "Ok");
+            }
             else
             {
+                if (Connectivity.NetworkAccess != NetworkAccess.Internet)
+                {
+                    await DisplayAlert("Hmm...",
+                        "It looks like you no longer have internet connectivity. Please try again", "Ok");
+                    return;
+                }
                 try
                 {
                     var location = await Geocoding.GetLocationsAsync(Property.Address);
@@ -149,7 +151,7 @@ namespace RealEstateApp
                 }
                 catch (Exception exception)
                 {
-                    await DisplayAlert("Oi!", exception.Message, "Ok");
+                    await DisplayAlert("Oi! This is weird ...", exception.Message, "Ok");
                 }
             }
         }
