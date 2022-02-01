@@ -124,7 +124,6 @@ namespace RealEstateApp
             {
                 await DisplayAlert("Location", "You have denied this app to have permission to use location services", "Ok");
             }
-
             lblLat.Text = location?.Latitude.ToString(CultureInfo.InvariantCulture);
             lblLong.Text = location?.Longitude.ToString(CultureInfo.CurrentCulture);
         }

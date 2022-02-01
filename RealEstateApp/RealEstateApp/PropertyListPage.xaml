@@ -7,7 +7,6 @@
              xmlns:fa="clr-namespace:FontAwesome"
              mc:Ignorable="d"
              x:Class="RealEstateApp.PropertyListPage">
-
     <ContentPage.ToolbarItems>
         <ToolbarItem Clicked="AddProperty_Clicked">
             <ToolbarItem.IconImageSource>
@@ -19,7 +18,7 @@
         <ToolbarItem Clicked="btnSort_OnClick" x:Name="btnSort">
             <ToolbarItem.IconImageSource>
                 <FontImageSource FontFamily="FA-solid"
-                                 Glyph="{Static fa:IconFont.SortAmountDown}"
+                                 Glyph="{Static fa:IconFont.SortAmountUp}"
                                  Size="{StaticResource ToolbarIconSize}" />
             </ToolbarItem.IconImageSource>
         </ToolbarItem>
@@ -87,6 +86,7 @@
                                        FontSize="13"
                                        Text="{Binding Property.LandSize, StringFormat='Land Size: {0} &#x33a1;'}" />
                                 <Label Grid.Row="4"
+                                       FontSize="13"
                                        Text="{Binding Property.Distance, StringFormat='{0:N0}km away'}" />
                             </Grid>
                         </Grid>

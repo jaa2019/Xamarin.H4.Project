@@ -15,9 +15,8 @@ namespace RealEstateApp
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class PropertyListPage : ContentPage
     {
-        private bool sorting = false;
+        private bool _sorting = false;
         IRepository Repository;
-
         public ObservableCollection<PropertyListItem> PropertiesCollection { get; } =
             new ObservableCollection<PropertyListItem>();
 
@@ -28,7 +27,7 @@ namespace RealEstateApp
             Repository = TinyIoCContainer.Current.Resolve<IRepository>();
             LoadProperties();
             BindingContext = this;
-
+            
             RefreshView.Command = new Command(OnRefresh);
         }
 
@@ -41,7 +40,7 @@ namespace RealEstateApp
 
         private async void OnRefresh()
         {
-            LoadProperties(sorting);
+            LoadProperties(_sorting);
             await Task.Delay(500);
             RefreshView.IsRefreshing = false;
         }
@@ -50,11 +49,33 @@ namespace RealEstateApp
         {
             PropertiesCollection.Clear();
             var items = Repository.GetProperties();
-            Location location = await Geolocation.GetLastKnownLocationAsync() ?? await Geolocation.GetLocationAsync();
+            Location location = null;
+            try
+            {
+                location = await Geolocation.GetLastKnownLocationAsync() ?? await Geolocation.GetLocationAsync();
+            }
+            catch (FeatureNotSupportedException ex)
+            {
+                await DisplayAlert("Location", ex.Message, "Ok");
+            }
+            catch (FeatureNotEnabledException ex)
+            {
+                await DisplayAlert("Location", "You need to enable location services to use this function", "Ok");
+            }
+            catch (PermissionException ex)
+            {
+                await DisplayAlert("Location", "You have denied this app to have permission to use location services",
+                    "Ok");
+            }
+
             foreach (var item in items.Where(item => item.Latitude != null && item.Longitude != null))
             {
-                item.Distance = location.CalculateDistance((double)item.Latitude, (double)item.Longitude,
-                    DistanceUnits.Kilometers);
+                if (location == null) continue;
+                if (item.Latitude != null && item.Longitude != null)
+                {
+                    item.Distance = location.CalculateDistance((double)item.Latitude, (double)item.Longitude,
+                        DistanceUnits.Kilometers);
+                }
             }
 
             if (!sortDesc)
@@ -75,10 +96,11 @@ namespace RealEstateApp
 
         private void btnSort_OnClick(object sender, EventArgs e)
         {
-            LoadProperties(sorting);
+            LoadProperties(_sorting);
             FontImageSource icon = (FontImageSource)btnSort.IconImageSource;
-            icon.Glyph = sorting ? IconFont.SortAmountUp : IconFont.SortAmountDown;
-            sorting = !sorting;
+            icon.Glyph = _sorting ? IconFont.SortAmountUp : IconFont.SortAmountDown;
+            btnSort.IconImageSource = icon;
+            _sorting = !_sorting;
         }
 
         private async void CollectionView_OnClick(object sender, SelectionChangedEventArgs e)
