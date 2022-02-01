@@ -1,4 +1,5 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8"?>
+
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
@@ -7,31 +8,28 @@
              mc:Ignorable="d"
              x:Class="RealEstateApp.PropertyDetailPage"
              Title="{Binding Property.Address}">
-    
+
     <ContentPage.ToolbarItems>
-        <ToolbarItem Clicked="EditProperty_Clicked"  Text="Edit" />
+        <ToolbarItem Clicked="EditProperty_Clicked" Text="Edit" />
     </ContentPage.ToolbarItems>
 
     <ScrollView VerticalOptions="FillAndExpand">
-        <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto" 
+        <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto"
               Padding="15">
-            <Image
-                Grid.Row="0"
-                Margin="-10,-10,-10,0"
-                Aspect="AspectFill"
-                HeightRequest="225"
-                Source="{Binding Property.MainImageUrl}" />
-            <Label
-                Grid.Row="1"
-                FontAttributes="Bold"
-                FontSize="16"
-                LineBreakMode="NoWrap"
-                Text="{Binding Property.Price, StringFormat='{0:C0}'}" />
-            <Label
-                Grid.Row="2"
-                FontSize="16"
-                LineBreakMode="NoWrap"
-                Text="{Binding Property.Address}" />
+            <Image Grid.Row="0"
+                   Margin="-10,-10,-10,0"
+                   Aspect="AspectFill"
+                   HeightRequest="225"
+                   Source="{Binding Property.MainImageUrl}" />
+            <Label Grid.Row="1"
+                   FontAttributes="Bold"
+                   FontSize="16"
+                   LineBreakMode="NoWrap"
+                   Text="{Binding Property.Price, StringFormat='{0:C0}'}" />
+            <Label Grid.Row="2"
+                   FontSize="16"
+                   LineBreakMode="NoWrap"
+                   Text="{Binding Property.Address}" />
             <Grid Grid.Row="3"
                   RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto">
                 <Label
@@ -69,47 +67,50 @@
                 Grid.Row="4"
                 FontSize="14"
                 Text="{Binding Property.LandSize, StringFormat='Land size: {0} &#x33a1;'}" />
-            <Label
-                Grid.Row="5"
-                Margin="0,20,0,0"
-                FontAttributes="Bold"
-                FontSize="14"
-                Text="Description:" />
-            <Label
-                Grid.Row="6"
-                Margin="0,0,0,20"
-                FontSize="14"
-                Text="{Binding Property.Description}" />
-            <Label
-                Grid.Row="7"
-                FontAttributes="Bold"
-                FontSize="14"
-                Text="Listed by:" />
-            <Grid Grid.Row="8">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <Image
-                    Grid.Column="0"
-                    Source="{Binding Agent.ImageUrl}"
-                    VerticalOptions="Start"
-                    WidthRequest="100" />
+            <Grid Grid.Row="5"
+                  ColumnDefinitions="10*, *, *">
+                <Label Grid.Column="0"
+                       Margin="0,20,0,0"
+                       FontAttributes="Bold"
+                       FontSize="14"
+                       Text="Description:" />
+                <Button Grid.Column="1"
+                        Clicked="btnPlay_OnClick"
+                        x:Name="btnPlay"
+                        FontFamily="FA-solid"
+                        Text="{Static fa:IconFont.Play}" />
+                <Button Grid.Column="2"
+                        Clicked="btnStop_OnClick"
+                        x:Name="btnStop"
+                        IsEnabled="False"
+                        FontFamily="FA-solid"
+                        Text="{Static fa:IconFont.Stop}" />
+            </Grid>
+            <Label Grid.Row="6"
+                   Margin="0,0,0,20"
+                   FontSize="14"
+                   Text="{Binding Property.Description}" />
+            <Label Grid.Row="7"
+                   FontAttributes="Bold"
+                   FontSize="14"
+                   Text="Listed by:" />
+            <Grid Grid.Row="8" ColumnDefinitions="Auto, *">
+                <Image Grid.Column="0"
+                       Source="{Binding Agent.ImageUrl}"
+                       VerticalOptions="Start"
+                       WidthRequest="100" />
                 <Grid Grid.Column="1"
                       RowDefinitions="Auto,Auto,Auto">
-                    <Label
-                        Grid.Row="0"
-                        FontAttributes="Bold"
-                        FontSize="14"
-                        Text="{Binding Agent.Name}" />
-                    <Label
-                        Grid.Row="1"
-                        FontSize="12"
-                        Text="{Binding Agent.Email}" />
-                    <Label
-                        Grid.Row="2"
-                        FontSize="12"
-                        Text="{Binding Agent.Phone}" />
+                    <Label Grid.Row="0"
+                           FontAttributes="Bold"
+                           FontSize="14"
+                           Text="{Binding Agent.Name}" />
+                    <Label Grid.Row="1"
+                           FontSize="12"
+                           Text="{Binding Agent.Email}" />
+                    <Label Grid.Row="2"
+                           FontSize="12"
+                           Text="{Binding Agent.Phone}" />
                 </Grid>
             </Grid>
         </Grid>
