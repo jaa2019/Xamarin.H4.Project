@@ -126,6 +126,32 @@ namespace RealEstateApp
             }
             lblLat.Text = location?.Latitude.ToString(CultureInfo.InvariantCulture);
             lblLong.Text = location?.Longitude.ToString(CultureInfo.CurrentCulture);
+            var placemarks = await Geocoding.GetPlacemarksAsync(location);
+            var p = placemarks.FirstOrDefault();
+            if (p != null)
+            {
+                Property.Address =
+                    $"{p.SubThoroughfare}, {p.Thoroughfare}, {p.Locality}, {p.PostalCode}, {p.CountryName}";
+            }
+        }
+
+        private async void btnAdress_OnClick(object sender, EventArgs e)
+        {
+            if (String.IsNullOrWhiteSpace(Property.Address))
+                await DisplayAlert("Hey!", "Address field cannot be blank", "Ok");
+            else
+            {
+                try
+                {
+                    var location = await Geocoding.GetLocationsAsync(Property.Address);
+                    Property.Longitude = location.FirstOrDefault().Longitude;
+                    Property.Latitude = location.FirstOrDefault().Latitude;
+                }
+                catch (Exception exception)
+                {
+                    await DisplayAlert("Oi!", exception.Message, "Ok");
+                }
+            }
         }
     }
 }

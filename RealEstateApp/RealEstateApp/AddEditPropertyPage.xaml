@@ -55,7 +55,7 @@
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
-                    <Grid ColumnDefinitions="2*, 2*, *">
+                    <Grid ColumnDefinitions="3*, 3*, *, *">
                         <Label Grid.Column="0"
                                x:Name="lblLong"
                                VerticalOptions="Center"
@@ -72,6 +72,14 @@
                                 TextColor="WhiteSmoke"
                                 FontFamily="FA-solid"
                                 Text="{Static fa:IconFont.MapPin}" />
+                        <Button Grid.Column="3"
+                                Clicked="btnAdress_OnClick"
+                                VerticalOptions="Center"
+                                WidthRequest="90"
+                                BackgroundColor="Blue"
+                                TextColor="WhiteSmoke"
+                                FontFamily="FA-solid"
+                                Text="{Static fa:IconFont.Home}" />
                     </Grid>
                     <Label FontSize="Medium" FontFamily="FA-solid">
                         <Label.FormattedText>
