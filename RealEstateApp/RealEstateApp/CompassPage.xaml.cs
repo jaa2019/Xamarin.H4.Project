@@ -12,9 +12,19 @@ namespace RealEstateApp
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class CompassPage : ContentPage
     {
+        public string CurrentHeading { get; set; }
+        public string CurrentAspect { get; set; }
+        public string RotationAngle { get; set; }
         public CompassPage()
         {
+            
             InitializeComponent();
+        }
+        
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            // DO SOMETHING
         }
     }
 }
