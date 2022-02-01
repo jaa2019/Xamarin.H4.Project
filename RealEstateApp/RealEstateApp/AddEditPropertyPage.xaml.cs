@@ -18,7 +18,7 @@ namespace RealEstateApp
 
         #region PROPERTIES
         public ObservableCollection<Agent> Agents { get; }
-
+        private Location _location;
         private Property _property;
         public Property Property
         {
@@ -101,10 +101,18 @@ namespace RealEstateApp
 
         private async void btnLocation_OnClick(object sender, EventArgs e)
         {
-            Location location = null;
             try
             {
-                location = await Geolocation.GetLocationAsync();
+                if (_location == null) GetLocationFromSystem();
+                lblLat.Text = _location?.Latitude.ToString(CultureInfo.InvariantCulture);
+                lblLong.Text = _location?.Longitude.ToString(CultureInfo.CurrentCulture);
+                var placemarks = await Geocoding.GetPlacemarksAsync(_location);
+                var p = placemarks.FirstOrDefault();
+                if (p != null)
+                {
+                    Property.Address =
+                        $"{p.SubThoroughfare}, {p.Thoroughfare}, {p.Locality}, {p.PostalCode}, {p.CountryName}";
+                }
             }
             catch (FeatureNotSupportedException ex)
             {
@@ -117,15 +125,6 @@ namespace RealEstateApp
             catch (PermissionException ex)
             {
                 await DisplayAlert("Location", "You have denied this app to have permission to use location services", "Ok");
-            }
-            lblLat.Text = location?.Latitude.ToString(CultureInfo.InvariantCulture);
-            lblLong.Text = location?.Longitude.ToString(CultureInfo.CurrentCulture);
-            var placemarks = await Geocoding.GetPlacemarksAsync(location);
-            var p = placemarks.FirstOrDefault();
-            if (p != null)
-            {
-                Property.Address =
-                    $"{p.SubThoroughfare}, {p.Thoroughfare}, {p.Locality}, {p.PostalCode}, {p.CountryName}";
             }
         }
 
@@ -153,6 +152,27 @@ namespace RealEstateApp
                 {
                     await DisplayAlert("Oi! This is weird ...", exception.Message, "Ok");
                 }
+            }
+        }
+        private async void GetLocationFromSystem()
+        {
+            _location = null;
+            try
+            {
+                _location = await Geolocation.GetLastKnownLocationAsync() ?? await Geolocation.GetLocationAsync();
+            }
+            catch (FeatureNotSupportedException ex)
+            {
+                await DisplayAlert("Location", ex.Message, "Ok");
+            }
+            catch (FeatureNotEnabledException ex)
+            {
+                await DisplayAlert("Location", "You need to enable location services to use this function", "Ok");
+            }
+            catch (PermissionException ex)
+            {
+                await DisplayAlert("Location", "You have denied this app to have permission to use location services",
+                    "Ok");
             }
         }
     }

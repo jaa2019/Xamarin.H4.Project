@@ -16,6 +16,7 @@ namespace RealEstateApp
     public partial class PropertyListPage : ContentPage
     {
         private bool _sorting = false;
+        private Location _location;
         IRepository Repository;
         public ObservableCollection<PropertyListItem> PropertiesCollection { get; } =
             new ObservableCollection<PropertyListItem>();
@@ -25,10 +26,33 @@ namespace RealEstateApp
             InitializeComponent();
 
             Repository = TinyIoCContainer.Current.Resolve<IRepository>();
-            LoadProperties();
             BindingContext = this;
+
+            GetLocationFromSystem();
             
             RefreshView.Command = new Command(OnRefresh);
+        }
+
+        private async void GetLocationFromSystem()
+        {
+            _location = null;
+            try
+            {
+                _location = await Geolocation.GetLastKnownLocationAsync() ?? await Geolocation.GetLocationAsync();
+            }
+            catch (FeatureNotSupportedException ex)
+            {
+                await DisplayAlert("Location", ex.Message, "Ok");
+            }
+            catch (FeatureNotEnabledException ex)
+            {
+                await DisplayAlert("Location", "You need to enable location services to use this function", "Ok");
+            }
+            catch (PermissionException ex)
+            {
+                await DisplayAlert("Location", "You have denied this app to have permission to use location services",
+                    "Ok");
+            }
         }
 
         protected override void OnAppearing()
@@ -49,31 +73,13 @@ namespace RealEstateApp
         {
             PropertiesCollection.Clear();
             var items = Repository.GetProperties();
-            Location location = null;
-            try
-            {
-                location = await Geolocation.GetLastKnownLocationAsync() ?? await Geolocation.GetLocationAsync();
-            }
-            catch (FeatureNotSupportedException ex)
-            {
-                await DisplayAlert("Location", ex.Message, "Ok");
-            }
-            catch (FeatureNotEnabledException ex)
-            {
-                await DisplayAlert("Location", "You need to enable location services to use this function", "Ok");
-            }
-            catch (PermissionException ex)
-            {
-                await DisplayAlert("Location", "You have denied this app to have permission to use location services",
-                    "Ok");
-            }
-
+            
             foreach (var item in items.Where(item => item.Latitude != null && item.Longitude != null))
             {
-                if (location == null) continue;
+                if (_location == null) GetLocationFromSystem();
                 if (item.Latitude != null && item.Longitude != null)
                 {
-                    item.Distance = location.CalculateDistance((double)item.Latitude, (double)item.Longitude,
+                    item.Distance = _location.CalculateDistance((double)item.Latitude, (double)item.Longitude,
                         DistanceUnits.Kilometers);
                 }
             }
