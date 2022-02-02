@@ -5,7 +5,8 @@
              x:Class="RealEstateApp.ImageListPage">
     <ContentPage.Content>
         <StackLayout Orientation="Vertical">
-            <CarouselView ItemsSource="{Binding images}"
+            <CarouselView x:Name="View" 
+                          ItemsSource="{Binding images}"
                           IndicatorView="indicatorView">
                 <CarouselView.ItemTemplate>
                     <DataTemplate>
