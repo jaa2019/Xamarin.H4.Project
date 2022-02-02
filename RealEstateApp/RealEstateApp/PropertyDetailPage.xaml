@@ -31,7 +31,7 @@
                    LineBreakMode="NoWrap"
                    Text="{Binding Property.Address}" />
             <Grid Grid.Row="3"
-                  RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto">
+                  ColumnDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto">
                 <Label
                     Grid.Column="0"
                     FontSize="16"
@@ -67,7 +67,7 @@
                 <Label FontSize="14"
                        Text="{Binding Property.LandSize, StringFormat='Land size: {0} &#x33a1;'}" />
                 <Label FontSize="14"
-                       Text="{Binding Property.Aspect, StringFormat='Terrace direction: {0};'}" />
+                       Text="{Binding Property.Aspect, StringFormat='Terrace direction: {0}'}" />
             </StackLayout>
             
             <Grid Grid.Row="5"

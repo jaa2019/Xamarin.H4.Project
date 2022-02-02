@@ -36,6 +36,7 @@ namespace RealEstateApp
         protected override void OnDisappearing()
         {
             if (Compass.IsMonitoring) Compass.Stop();
+            Compass.ReadingChanged -= GetCompassDirection;
         }
 
         private void GetCompassDirection(object sender, CompassChangedEventArgs e)

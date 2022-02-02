@@ -9,5 +9,6 @@
     <FlyoutItem FlyoutDisplayOptions="AsMultipleItems">
         <ShellContent Title="Properties" ContentTemplate="{DataTemplate realEstateApp:PropertyListPage}" />
         <ShellContent Title="About" ContentTemplate="{DataTemplate realEstateApp:AboutPage}" />
+        <ShellContent Title="Height calculator" ContentTemplate="{DataTemplate realEstateApp:HeightCalculatorPage}" />
     </FlyoutItem>
 </Shell>
