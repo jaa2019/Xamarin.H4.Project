@@ -67,5 +67,10 @@ namespace RealEstateApp
             catch (Exception)
             { }
         }
+
+        private async void Image_OnTap(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new ImageListPage(Property.ImageUrls));
+        }
     }
 }
