@@ -63,10 +63,13 @@
                     FontSize="16"
                     Text="{Binding Property.Parking}" />
             </Grid>
-            <Label
-                Grid.Row="4"
-                FontSize="14"
-                Text="{Binding Property.LandSize, StringFormat='Land size: {0} &#x33a1;'}" />
+            <StackLayout Grid.Row="4" Orientation="Horizontal">
+                <Label FontSize="14"
+                       Text="{Binding Property.LandSize, StringFormat='Land size: {0} &#x33a1;'}" />
+                <Label FontSize="14"
+                       Text="{Binding Property.Aspect, StringFormat='Terrace direction: {0};'}" />
+            </StackLayout>
+            
             <Grid Grid.Row="5"
                   ColumnDefinitions="10*, *, *">
                 <Label Grid.Column="0"
