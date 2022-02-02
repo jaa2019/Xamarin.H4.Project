@@ -89,6 +89,29 @@
                                 FontFamily="FA-solid"
                                 Text="{Static fa:IconFont.Home}" />
                     </Grid>
+                    
+                    <Label FontSize="Medium" FontFamily="FA-solid">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="{Static fa:IconFont.Compass}" />
+                                <Span Text=" Aspect" />
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                    <Grid ColumnDefinitions="5*, *">
+                        <Entry Grid.Column="0"
+                               FontSize="Medium"
+                               Text="{Binding Property.Aspect}" />
+                        <Button Grid.Column="1"
+                                Clicked="btnCompass_OnClick"
+                                VerticalOptions="Center"
+                                WidthRequest="90"
+                                BackgroundColor="Blue"
+                                TextColor="WhiteSmoke"
+                                FontFamily="FA-solid"
+                                Text="{Static fa:IconFont.Compass}" />
+                    </Grid>
+                    
                     <Label FontSize="Medium" FontFamily="FA-solid">
                         <Label.FormattedText>
                             <FormattedString>

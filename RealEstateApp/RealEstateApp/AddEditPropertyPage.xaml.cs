@@ -29,6 +29,7 @@ namespace RealEstateApp
         public Color StatusColor { get; set; } = Color.White;
         public ObservableCollection<Agent> Agents { get; }
 
+        private Property _ogProperty;
         private Property _property;
 
         public Property Property
@@ -67,7 +68,6 @@ namespace RealEstateApp
             btnAdress.IsEnabled = false || Connectivity.NetworkAccess == NetworkAccess.Internet;
             Repository = TinyIoCContainer.Current.Resolve<IRepository>();
             Agents = new ObservableCollection<Agent>(Repository.GetAgents());
-
             if (property == null)
             {
                 Title = "Add Property";
@@ -76,10 +76,31 @@ namespace RealEstateApp
             else
             {
                 Title = "Edit Property";
-                Property = property;
+                _ogProperty = property;
+                Property = CloneProperty(property);
             }
 
             BindingContext = this;
+        }
+
+        private Property CloneProperty(Property property)
+        {
+            Property prop = new Property();
+            prop.Address = property.Address;
+            prop.Aspect = property.Aspect;
+            prop.AgentId = property.AgentId;
+            prop.Baths = property.Baths;
+            prop.Beds = property.Beds;
+            prop.Description = property.Description;
+            prop.Distance = property.Distance;
+            prop.Id = property.Id;
+            prop.Latitude = property.Latitude;
+            prop.Longitude = property.Longitude;
+            prop.Parking = property.Parking;
+            prop.Price = property.Price;
+            prop.ImageUrls = property.ImageUrls;
+            prop.LandSize = property.LandSize;
+            return prop;
         }
 
         private async void SaveProperty_Clicked(object sender, System.EventArgs e)
@@ -91,7 +112,8 @@ namespace RealEstateApp
             else
             {
                 Feedback();
-                Repository.SaveProperty(Property);
+                _ogProperty = Property;
+                Repository.SaveProperty(_ogProperty);
                 await Navigation.PopToRootAsync();
             }
         }
@@ -257,6 +279,11 @@ namespace RealEstateApp
             await Task.Delay(2000);
             _onScreen = false;
             StatusMessage = "";
+        }
+
+        private async void btnCompass_OnClick(object sender, EventArgs e)
+        {
+            await Navigation.PushModalAsync(new CompassPage(Property));
         }
     }
 }

@@ -5,23 +5,38 @@
              xmlns:fa="clr-namespace:FontAwesome"
              x:Class="RealEstateApp.CompassPage">
     <ContentPage.Content>
-        <Grid RowDefinitions="Auto,*,Auto" ColumnDefinitions="*" >
-            <Label Grid.Row="0" Grid.Column="0"
+        <Grid RowDefinitions="50, Auto,*,Auto" ColumnDefinitions="*, 3*, *" >
+            <Label Grid.Row="1" Grid.Column="1"
                    FontFamily="FA-solid" FontSize="Large"
                    Margin="0,20"
                    HorizontalOptions="Center"
                    Text="{Binding CurrentAspect}" />
     
-            <Image Grid.Row="1" Grid.Column="0"
+            <Image Grid.Row="2" Grid.Column="1"
                    Source="compass.png"
                    Rotation="{Binding RotationAngle}"
                    Aspect="AspectFit"
                    HorizontalOptions="Center" />
     
-            <Label Grid.Row="2" Grid.Column="0"
+            <Label Grid.Row="3" Grid.Column="1"
                    Margin="0,20"
                    HorizontalOptions="Center"
                    Text="{Binding CurrentHeading, StringFormat='Heading {0:N2}&#186;'}" />
+            
+            <Button Grid.Row="3" Grid.Column="0"
+                    Clicked="btnBack_OnClick"
+                    BackgroundColor="Blue"
+                    TextColor="WhiteSmoke"
+                    FontFamily="FA-solid"
+                    FontSize="Large"
+                    Text="{Static fa:IconFont.StepBackward}" />
+            <Button Grid.Row="3" Grid.Column="2"
+                    Clicked="btnSave_OnClick"
+                    BackgroundColor="Blue"
+                    TextColor="WhiteSmoke"
+                    FontFamily="FA-solid"
+                    FontSize="{StaticResource ToolbarIconSize}"
+                    Text="{Static fa:IconFont.Save}" />
         </Grid>
     </ContentPage.Content>
 </ContentPage>

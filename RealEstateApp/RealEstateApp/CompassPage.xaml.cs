@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using RealEstateApp.Models;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -15,14 +16,17 @@ namespace RealEstateApp
         public double CurrentHeading { get; set; }
         public string CurrentAspect { get; set; }
         public double RotationAngle { get; set; }
-        public CompassPage()
+        private Property _property;
+
+        public CompassPage(Property property)
         {
+            _property = property;
             Compass.ReadingChanged += GetCompassDirection;
             Compass.Start(SensorSpeed.UI);
             InitializeComponent();
             BindingContext = this;
         }
-        
+
         protected override void OnAppearing()
         {
             base.OnAppearing();
@@ -43,26 +47,37 @@ namespace RealEstateApp
         }
 
         private void CalculateHeading(double heading)
-        {                      
-            if (heading < 22.5-11.5 || heading > (360-11.5)) CurrentAspect = "North";
-            if (heading > (22.5*1)-11.5 && heading < (22.5*2)-11.5) CurrentAspect = "North north-east";
-            if (heading > (22.5*2)-11.5 && heading < (22.5*3)-11.5) CurrentAspect = "North east";
-            if (heading > (22.5*3)-11.5 && heading < (22.5*4)-11.5) CurrentAspect = "East north-east";
-            
-            if (heading > (22.5*4)-11.5 && heading < (22.5*5)-11.5) CurrentAspect = "East";
-            if (heading > (22.5*5)-11.5 && heading < (22.5*6)-11.5) CurrentAspect = "East south-east";
-            if (heading > (22.5*6)-11.5 && heading < (22.5*7)-11.5) CurrentAspect = "South east";
-            if (heading > (22.5*7)-11.5 && heading < (22.5*8)-11.5) CurrentAspect = "South south-east";
-            
-            if (heading > (22.5*8)-11.5 && heading < (22.5*9)-11.5) CurrentAspect = "South";
-            if (heading > (22.5*9)-11.5 && heading < (22.5*10)-11.5) CurrentAspect = "South south-west";
-            if (heading > (22.5*10)-11.5 && heading < (22.5*11)-11.5) CurrentAspect = "South West";
-            if (heading > (22.5*11)-11.5 && heading < (22.5*12)-11.5) CurrentAspect = "West south-west";
-            
-            if (heading > (22.5*12)-11.5 && heading < (22.5*13)-11.5) CurrentAspect = "West";
-            if (heading > (22.5*13)-11.5 && heading < (22.5*14)-11.5) CurrentAspect = "West north-west";
-            if (heading > (22.5*14)-11.5 && heading < (22.5*15)-11.5) CurrentAspect = "North West";
-            if (heading > (22.5*15)-11.5 && heading < (22.5*16)-11.5) CurrentAspect = "North north-west";
+        {
+            if (heading < 22.5 - 11.5 || heading > (360 - 11.5)) CurrentAspect = "North";
+            if (heading > (22.5 * 1) - 11.5 && heading < (22.5 * 2) - 11.5) CurrentAspect = "North north-east";
+            if (heading > (22.5 * 2) - 11.5 && heading < (22.5 * 3) - 11.5) CurrentAspect = "North east";
+            if (heading > (22.5 * 3) - 11.5 && heading < (22.5 * 4) - 11.5) CurrentAspect = "East north-east";
+
+            if (heading > (22.5 * 4) - 11.5 && heading < (22.5 * 5) - 11.5) CurrentAspect = "East";
+            if (heading > (22.5 * 5) - 11.5 && heading < (22.5 * 6) - 11.5) CurrentAspect = "East south-east";
+            if (heading > (22.5 * 6) - 11.5 && heading < (22.5 * 7) - 11.5) CurrentAspect = "South east";
+            if (heading > (22.5 * 7) - 11.5 && heading < (22.5 * 8) - 11.5) CurrentAspect = "South south-east";
+
+            if (heading > (22.5 * 8) - 11.5 && heading < (22.5 * 9) - 11.5) CurrentAspect = "South";
+            if (heading > (22.5 * 9) - 11.5 && heading < (22.5 * 10) - 11.5) CurrentAspect = "South south-west";
+            if (heading > (22.5 * 10) - 11.5 && heading < (22.5 * 11) - 11.5) CurrentAspect = "South West";
+            if (heading > (22.5 * 11) - 11.5 && heading < (22.5 * 12) - 11.5) CurrentAspect = "West south-west";
+
+            if (heading > (22.5 * 12) - 11.5 && heading < (22.5 * 13) - 11.5) CurrentAspect = "West";
+            if (heading > (22.5 * 13) - 11.5 && heading < (22.5 * 14) - 11.5) CurrentAspect = "West north-west";
+            if (heading > (22.5 * 14) - 11.5 && heading < (22.5 * 15) - 11.5) CurrentAspect = "North West";
+            if (heading > (22.5 * 15) - 11.5 && heading < (22.5 * 16) - 11.5) CurrentAspect = "North north-west";
+        }
+
+        private async void btnBack_OnClick(object sender, EventArgs e)
+        {
+            await Navigation.PopModalAsync();
+        }
+
+        private async void btnSave_OnClick(object sender, EventArgs e)
+        {
+            _property.Aspect = CurrentAspect;
+            await Navigation.PopModalAsync();
         }
     }
 }
