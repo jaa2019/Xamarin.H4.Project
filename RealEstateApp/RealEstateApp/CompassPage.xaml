@@ -2,31 +2,26 @@
 
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:fa="clr-namespace:FontAwesome"
              x:Class="RealEstateApp.CompassPage">
     <ContentPage.Content>
         <Grid RowDefinitions="Auto,*,Auto" ColumnDefinitions="*" >
-            <Label FontSize="Large" FontFamily="FA-solid" Margin="0,20" HorizontalOptions="Center">
-                <Label.FormattedText>
-                    <FormattedString>
-                        <Span Text="{Static fa:IconFont.ArrowUp}"/>
-                        <Span Text=" " />
-                        <Span Text="{Binding CurrentAspect}" />
-                        <Span Text=" Aspect" />
-                        <Span Text=" " />
-                        <Span Text="{Static fa:IconFont.ArrowUp}"/>
-                    </FormattedString>
-                </Label.FormattedText>
-            </Label>
-
-            <Image Source="compass.png" 
-                   Rotation="{Binding RotationAngle}" 
-                   Grid.Row="1" Grid.Column="0" 
-                   HorizontalOptions="Center"  />
-
-            <Label Text="{Binding CurrentHeading, StringFormat='Heading {0:N2}'}" 
-                   Margin="0,20" 
-                   Grid.Row="2" Grid.Column="0" 
+            <Label Grid.Row="0" Grid.Column="0"
+                   FontFamily="FA-solid" FontSize="Large"
+                   Margin="0,20"
+                   HorizontalOptions="Center"
+                   Text="{Binding CurrentAspect}" />
+    
+            <Image Grid.Row="1" Grid.Column="0"
+                   Source="compass.png"
+                   Rotation="{Binding RotationAngle}"
+                   Aspect="AspectFit"
                    HorizontalOptions="Center" />
+    
+            <Label Grid.Row="2" Grid.Column="0"
+                   Margin="0,20"
+                   HorizontalOptions="Center"
+                   Text="{Binding CurrentHeading, StringFormat='Heading {0:N2}&#186;'}" />
         </Grid>
     </ContentPage.Content>
 </ContentPage>
