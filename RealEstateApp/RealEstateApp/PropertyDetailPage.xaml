@@ -14,7 +14,7 @@
     </ContentPage.ToolbarItems>
 
     <ScrollView VerticalOptions="FillAndExpand">
-        <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto, Auto"
+        <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto, Auto, Auto"
               Padding="15">
             <Image Grid.Row="0"
                    Margin="-10,-10,-10,0"
@@ -178,7 +178,7 @@
                    FontAttributes="Bold"
                    FontSize="14"
                    Text="Listed by:" />
-            <Grid Grid.Row="9" ColumnDefinitions="Auto, *, *">
+            <Grid Grid.Row="9" ColumnDefinitions="Auto, *">
                 <Image Grid.Column="0"
                        Source="{Binding Agent.ImageUrl}"
                        VerticalOptions="Start"
@@ -196,23 +196,64 @@
                            FontSize="12"
                            Text="{Binding Agent.Phone}" />
                 </Grid>
-                <StackLayout Grid.Column="2"
-                             Orientation="Horizontal">
-                    <Button Clicked="btnPdf_OnClick"
-                            FontFamily="FA-solid"
-                            FontSize="{StaticResource ToolbarIconSize}"
-                            Text="{Static fa:IconFont.FilePdf}"/>
-                    <Button Clicked="btnShare_OnClick"
-                            FontFamily="FA-solid"
-                            FontSize="{StaticResource ToolbarIconSize}"
-                            Text="{Static fa:IconFont.ShareAlt}"/>
-                    <Button Clicked="btnCopy_OnClick"
-                            FontFamily="FA-solid"
-                            FontSize="{StaticResource ToolbarIconSize}"
-                            Text="{Static fa:IconFont.Clipboard}"/>
-                </StackLayout>
-                
             </Grid>
+            <StackLayout Grid.Row="10"
+                         Orientation="Horizontal">
+                <Label HorizontalOptions="CenterAndExpand">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer
+                            Tapped="btnPdf_OnClick"
+                            NumberOfTapsRequired="1" />
+                    </Label.GestureRecognizers>
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span FontFamily="FA-solid"
+                                  FontSize="{StaticResource ToolbarIconSize}"
+                                  TextColor="Blue"
+                                  Text="{Static fa:IconFont.FilePdf}" />
+                            <Span FontSize="13"
+                                  FontAttributes="Bold"
+                                  Text=" Contract" />
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+                <Label HorizontalOptions="CenterAndExpand">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer
+                            Tapped="btnShare_OnClick"
+                            NumberOfTapsRequired="1" />
+                    </Label.GestureRecognizers>
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span FontFamily="FA-solid"
+                                  FontSize="{StaticResource ToolbarIconSize}"
+                                  TextColor="Blue"
+                                  Text="{Static fa:IconFont.ShareAlt}" />
+                            <Span FontSize="13"
+                                  FontAttributes="Bold"
+                                  Text=" Share" />
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+                <Label HorizontalOptions="CenterAndExpand">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer
+                            Tapped="btnShare_OnClick"
+                            NumberOfTapsRequired="1" />
+                    </Label.GestureRecognizers>
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span FontFamily="FA-solid"
+                                  FontSize="{StaticResource ToolbarIconSize}"
+                                  TextColor="Blue"
+                                  Text="{Static fa:IconFont.Copy}" />
+                            <Span FontSize="13"
+                                  FontAttributes="Bold"
+                                  Text=" Copy" />
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+            </StackLayout>
         </Grid>
     </ScrollView>
 </ContentPage>
