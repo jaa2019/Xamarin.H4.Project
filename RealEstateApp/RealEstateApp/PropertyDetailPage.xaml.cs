@@ -100,7 +100,7 @@ namespace RealEstateApp
         private async void Phone_OnTap(object sender, EventArgs e)
         {
             string[] buttons = new[] { "Phone", "Text" };
-            var ask = await DisplayActionSheet("Contact", null, null, FlowDirection.MatchParent, buttons);
+            var ask = await DisplayActionSheet("Contact", "Cancel", null, FlowDirection.MatchParent, buttons);
             try
             {
                 if (ask == "Phone") 
