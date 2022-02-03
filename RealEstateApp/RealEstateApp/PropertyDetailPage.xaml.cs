@@ -43,14 +43,14 @@ namespace RealEstateApp
         {
             _cts = new CancellationTokenSource();
             btnPlay.IsEnabled = false;
-            btnStop.IsEnabled = !btnPlay.IsVisible;
+            btnStop.IsEnabled = !btnPlay.IsEnabled;
             await TextToSpeech.SpeakAsync(Property.Description, _cts.Token);
         }
 
         private async void btnStop_OnClick(object sender, EventArgs e)
         {
             btnPlay.IsEnabled = true;
-            btnStop.IsEnabled = !btnPlay.IsVisible;
+            btnStop.IsEnabled = !btnPlay.IsEnabled;
             _cts.Cancel();
         }
 
@@ -113,6 +113,23 @@ namespace RealEstateApp
             {
                 await DisplayAlert("Oi!", ex.Message, "awwww...");
             }
+        }
+
+        private void btnShowMap_OnClick(object sender, EventArgs e)
+        {
+            OpenMaps();
+        }
+
+        private void btnGetDirection_OnClick(object sender, EventArgs e)
+        {
+            OpenMaps(true);
+        }
+
+        private async void OpenMaps(bool navigation = false)
+        {
+            var options = navigation ? new MapLaunchOptions { NavigationMode = NavigationMode.Driving } : new MapLaunchOptions();
+            Location location = new Location((double)Property.Latitude, (double)Property.Longitude);
+            await Map.OpenAsync(location, options);
         }
     }
 }
