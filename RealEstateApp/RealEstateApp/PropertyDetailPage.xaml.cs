@@ -131,5 +131,28 @@ namespace RealEstateApp
             Location location = new Location((double)Property.Latitude, (double)Property.Longitude);
             await Map.OpenAsync(location, options);
         }
+
+        private void Description_OnTap(object sender, EventArgs e)
+        {
+            OpenBrowser();
+        }
+        
+        private void btnExLink_OnClick(object sender, EventArgs e)
+        {
+            OpenBrowser(true);
+        }
+
+        private async void OpenBrowser(bool external = false)
+        {
+            var mode = external ? BrowserLaunchMode.External : BrowserLaunchMode.SystemPreferred;
+            await Browser.OpenAsync(Property.NeighbourhoodUrl, mode);
+        }
+
+        private void btnPdf_OnClick(object sender, EventArgs e)
+        {
+            var folder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            var file = Path.Combine(folder, "contract.pdf");
+            
+        }
     }
 }

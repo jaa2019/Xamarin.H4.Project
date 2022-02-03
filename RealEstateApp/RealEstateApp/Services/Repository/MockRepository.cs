@@ -1,7 +1,10 @@
 ﻿using RealEstateApp.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
+using Xamarin.Essentials;
 
 namespace RealEstateApp.Services.Repository
 {
@@ -9,11 +12,24 @@ namespace RealEstateApp.Services.Repository
     {
         private List<Agent> _agents;
         private List<Property> _properties;
+        private string _contractFilePath;
 
         public MockRepository()
         {
+            LoadFiles().Wait();
             LoadProperties();
             LoadAgents();
+        }
+
+        private async Task LoadFiles()
+        {
+            var folderPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            _contractFilePath = Path.Combine(folderPath, "contract.pdf");
+
+            using Stream contractStream = await FileSystem.OpenAppPackageFileAsync("contract.pdf");
+            using MemoryStream memoryStream = new();
+            contractStream.CopyTo(memoryStream);
+            File.WriteAllBytes(_contractFilePath, memoryStream.ToArray());
         }
 
         public List<Agent> GetAgents()
@@ -153,7 +169,7 @@ namespace RealEstateApp.Services.Repository
                         Phone = "+61423555712"
                     },
                     NeighbourhoodUrl = "https://en.wikipedia.org/wiki/Collaroy,_New_South_Wales",
-                    // ContractFilePath = _contractFilePath,
+                    ContractFilePath = _contractFilePath,
                     Aspect = "North"
                 },
                 new Property
@@ -172,7 +188,7 @@ namespace RealEstateApp.Services.Repository
                         Phone = "+61290014312"
                     },
                     NeighbourhoodUrl = "https://en.wikipedia.org/wiki/Collaroy,_New_South_Wales",
-                    // ContractFilePath = _contractFilePath,
+                    ContractFilePath = _contractFilePath,
                     Aspect = "East"
                 },
                 new Property
@@ -190,7 +206,7 @@ namespace RealEstateApp.Services.Repository
                         Phone = "0429008145"
                     },
                     NeighbourhoodUrl = "https://en.wikipedia.org/wiki/Collaroy,_New_South_Wales",
-                    // ContractFilePath = _contractFilePath,
+                    ContractFilePath = _contractFilePath,
                     Aspect = "South"
                 },
                 new Property
@@ -209,7 +225,7 @@ namespace RealEstateApp.Services.Repository
                         Phone = "02 8090 6412"
                     },
                     NeighbourhoodUrl = "https://en.wikipedia.org/wiki/Collaroy,_New_South_Wales",
-                    // ContractFilePath = _contractFilePath,
+                    ContractFilePath = _contractFilePath,
                     Aspect = "North"
                 },
                 new Property
@@ -227,7 +243,7 @@ namespace RealEstateApp.Services.Repository
                         Phone = "90541823"
                     },
                     NeighbourhoodUrl = "https://en.wikipedia.org/wiki/Collaroy,_New_South_Wales",
-                    // ContractFilePath = _contractFilePath,
+                    ContractFilePath = _contractFilePath,
                     Aspect = "West"
                 }
             };

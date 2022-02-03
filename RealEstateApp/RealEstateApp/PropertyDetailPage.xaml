@@ -28,18 +28,21 @@
             </Image>
             <Grid Grid.Row="1" ColumnDefinitions="10*, *, *">
                 <Label Grid.Column="0"
+                       HorizontalTextAlignment="Start"
+                       VerticalOptions="Center"
+                       LineBreakMode="NoWrap"
                        FontAttributes="Bold"
                        FontSize="16"
-                       LineBreakMode="NoWrap"
-                       HorizontalTextAlignment="Start"
                        Text="{Binding Property.Price, StringFormat='{0:C0}'}" />
                 <Button Grid.Column="1"
                         Clicked="btnShowMap_OnClick"
+                        VerticalOptions="Center"
                         FontFamily="FA-solid"
                         TextColor="Blue"
                         Text="{Static fa:IconFont.MapMarkedAlt}" />
                 <Button Grid.Column="2"
                         Clicked="btnGetDirection_OnClick"
+                        VerticalOptions="Center"
                         FontFamily="FA-solid"
                         TextColor="Blue"
                         Text="{Static fa:IconFont.Directions}" />
@@ -90,11 +93,33 @@
 
             <Grid Grid.Row="5"
                   ColumnDefinitions="10*, *, *">
-                <Label Grid.Column="0"
-                       Margin="0,20,0,0"
-                       FontAttributes="Bold"
-                       FontSize="14"
-                       Text="Description:" />
+                <StackLayout Grid.Column="0"
+                             Orientation="Horizontal"
+                             VerticalOptions="Center">
+                    <Label FontAttributes="Bold"
+                           FontSize="14"
+                           HorizontalOptions="Start"
+                           VerticalTextAlignment="Center">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="Description_OnTap"
+                                                  NumberOfTapsRequired="1" />
+                        </Label.GestureRecognizers>
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span FontFamily="FA-solid"
+                                      TextColor="Blue"
+                                      Text="{Static fa:IconFont.Link}" />
+                                <Span Text="Description:" />
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                    <Button Clicked="btnExLink_OnClick"
+                            HorizontalOptions="StartAndExpand"
+                            VerticalOptions="Center"
+                            FontFamily="FA-solid"
+                            TextColor="Blue"
+                            Text="{Static fa:IconFont.ExternalLinkAlt}" />
+                </StackLayout>
                 <Button Grid.Column="1"
                         Clicked="btnPlay_OnClick"
                         x:Name="btnPlay"
@@ -153,7 +178,7 @@
                    FontAttributes="Bold"
                    FontSize="14"
                    Text="Listed by:" />
-            <Grid Grid.Row="9" ColumnDefinitions="Auto, *">
+            <Grid Grid.Row="9" ColumnDefinitions="Auto, *, *">
                 <Image Grid.Column="0"
                        Source="{Binding Agent.ImageUrl}"
                        VerticalOptions="Start"
@@ -171,6 +196,10 @@
                            FontSize="12"
                            Text="{Binding Agent.Phone}" />
                 </Grid>
+                <Button Grid.Column="2"
+                        Clicked="btnPdf_OnClick"
+                        FontFamily="FA-solid"
+                        Text="{Static fa:IconFont.FilePdf}"/>
             </Grid>
         </Grid>
     </ScrollView>
