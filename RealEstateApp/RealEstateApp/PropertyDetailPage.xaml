@@ -196,10 +196,15 @@
                            FontSize="12"
                            Text="{Binding Agent.Phone}" />
                 </Grid>
-                <Button Grid.Column="2"
-                        Clicked="btnPdf_OnClick"
-                        FontFamily="FA-solid"
-                        Text="{Static fa:IconFont.FilePdf}"/>
+                <StackLayout Grid.Column="2"
+                             Orientation="Vertical">
+                    <Button Clicked="btnPdf_OnClick"
+                            FontFamily="FA-solid"
+                            FontSize="{StaticResource ToolbarIconSize}"
+                            Text="{Static fa:IconFont.FilePdf}"/>
+                    <Label Text="View contract" />
+                </StackLayout>
+                
             </Grid>
         </Grid>
     </ScrollView>

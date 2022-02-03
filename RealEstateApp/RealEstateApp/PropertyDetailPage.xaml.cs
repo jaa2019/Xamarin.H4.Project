@@ -17,6 +17,10 @@ namespace RealEstateApp
     {
         private CancellationTokenSource _cts;
 
+        public Agent Agent { get; set; }
+
+        public Property Property { get; set; }
+
         public PropertyDetailPage(PropertyListItem propertyListItem)
         {
             InitializeComponent();
@@ -28,10 +32,6 @@ namespace RealEstateApp
 
             BindingContext = this;
         }
-
-        public Agent Agent { get; set; }
-
-        public Property Property { get; set; }
 
         private async void EditProperty_Clicked(object sender, System.EventArgs e)
         {
@@ -148,11 +148,9 @@ namespace RealEstateApp
             await Browser.OpenAsync(Property.NeighbourhoodUrl, mode);
         }
 
-        private void btnPdf_OnClick(object sender, EventArgs e)
+        private async void btnPdf_OnClick(object sender, EventArgs e)
         {
-            var folder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            var file = Path.Combine(folder, "contract.pdf");
-            
+            await Launcher.OpenAsync(new OpenFileRequest { File=new ReadOnlyFile(Property.ContractFilePath)});
         }
     }
 }
