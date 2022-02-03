@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using RealEstateApp.Models;
 using RealEstateApp.Services;
 using System.Linq;
@@ -14,6 +16,7 @@ namespace RealEstateApp
     public partial class PropertyDetailPage : ContentPage
     {
         private CancellationTokenSource _cts;
+
         public PropertyDetailPage(PropertyListItem propertyListItem)
         {
             InitializeComponent();
@@ -50,7 +53,7 @@ namespace RealEstateApp
             btnStop.IsEnabled = !btnPlay.IsVisible;
             _cts.Cancel();
         }
-        
+
         private void Feedback(bool longPress = false)
         {
             try
@@ -65,12 +68,51 @@ namespace RealEstateApp
                 }
             }
             catch (Exception)
-            { }
+            {
+            }
         }
 
         private async void Image_OnTap(object sender, EventArgs e)
         {
             await Navigation.PushAsync(new ImageListPage(Property.ImageUrls));
+        }
+
+        private async void Email_OnTap(object sender, EventArgs e)
+        {
+            try
+            {
+                var folder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+                var attachmentPath = Path.Combine(folder, "property.txt");
+                File.WriteAllText(attachmentPath, $"{Property.Address}");
+                EmailMessage message = new();
+                message.To = new List<string> { Property.Vendor.Email };
+                message.Subject = Property.Address;
+                message.Body = Property.Description;
+                message.Attachments.Add(new EmailAttachment(attachmentPath));
+                await Email.ComposeAsync(message);
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Oi!", ex.Message, "awwww...");
+            }
+        }
+
+        private async void Phone_OnTap(object sender, EventArgs e)
+        {
+            string[] buttons = new[] { "Phone", "Text" };
+            var ask = await DisplayActionSheet("Contact", null, null, FlowDirection.MatchParent, buttons);
+            try
+            {
+                if (ask == "Phone") 
+                    PhoneDialer.Open(Property.Vendor.Phone);
+                if (ask == "Text")
+                    await Sms.ComposeAsync(new SmsMessage($"Hello {Property.Vendor.FirstName}, about {Property.Address}",
+                        Property.Vendor.Phone));
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Oi!", ex.Message, "awwww...");
+            }
         }
     }
 }
