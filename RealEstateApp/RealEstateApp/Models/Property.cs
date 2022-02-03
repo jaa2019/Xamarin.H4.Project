@@ -34,6 +34,7 @@ namespace RealEstateApp.Models
         public double? Distance { get; set; }
         public string Aspect { get; set; }
         public Vendor Vendor { get; set; }
+        public string NeighbourhoodUrl { get; set; }
 
         public string MainImageUrl => ImageUrls?.FirstOrDefault() ?? GlobalSettings.Instance.NoImageUrl;
     }
