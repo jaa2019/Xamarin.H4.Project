@@ -13,6 +13,7 @@ namespace RealEstateApp
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class CompassPage : ContentPage
     {
+        // ReSharper disable once UnusedAutoPropertyAccessor.Global
         public double CurrentHeading { get; set; }
         public string CurrentAspect { get; set; }
         public double RotationAngle { get; set; }
@@ -21,7 +22,6 @@ namespace RealEstateApp
         public CompassPage(Property property)
         {
             _property = property;
-            Compass.ReadingChanged += GetCompassDirection;
             Compass.Start(SensorSpeed.UI);
             InitializeComponent();
             BindingContext = this;
@@ -29,8 +29,8 @@ namespace RealEstateApp
 
         protected override void OnAppearing()
         {
-            base.OnAppearing();
-            // TODO
+            if (!Compass.IsMonitoring) Compass.Start(SensorSpeed.UI);
+            Compass.ReadingChanged += GetCompassDirection;
         }
 
         protected override void OnDisappearing()
@@ -49,25 +49,26 @@ namespace RealEstateApp
 
         private void CalculateHeading(double heading)
         {
-            if (heading < 22.5 - 11.5 || heading > (360 - 11.5)) CurrentAspect = "North";
-            if (heading > (22.5 * 1) - 11.5 && heading < (22.5 * 2) - 11.5) CurrentAspect = "North north-east";
-            if (heading > (22.5 * 2) - 11.5 && heading < (22.5 * 3) - 11.5) CurrentAspect = "North east";
-            if (heading > (22.5 * 3) - 11.5 && heading < (22.5 * 4) - 11.5) CurrentAspect = "East north-east";
-
-            if (heading > (22.5 * 4) - 11.5 && heading < (22.5 * 5) - 11.5) CurrentAspect = "East";
-            if (heading > (22.5 * 5) - 11.5 && heading < (22.5 * 6) - 11.5) CurrentAspect = "East south-east";
-            if (heading > (22.5 * 6) - 11.5 && heading < (22.5 * 7) - 11.5) CurrentAspect = "South east";
-            if (heading > (22.5 * 7) - 11.5 && heading < (22.5 * 8) - 11.5) CurrentAspect = "South south-east";
-
-            if (heading > (22.5 * 8) - 11.5 && heading < (22.5 * 9) - 11.5) CurrentAspect = "South";
-            if (heading > (22.5 * 9) - 11.5 && heading < (22.5 * 10) - 11.5) CurrentAspect = "South south-west";
-            if (heading > (22.5 * 10) - 11.5 && heading < (22.5 * 11) - 11.5) CurrentAspect = "South West";
-            if (heading > (22.5 * 11) - 11.5 && heading < (22.5 * 12) - 11.5) CurrentAspect = "West south-west";
-
-            if (heading > (22.5 * 12) - 11.5 && heading < (22.5 * 13) - 11.5) CurrentAspect = "West";
-            if (heading > (22.5 * 13) - 11.5 && heading < (22.5 * 14) - 11.5) CurrentAspect = "West north-west";
-            if (heading > (22.5 * 14) - 11.5 && heading < (22.5 * 15) - 11.5) CurrentAspect = "North West";
-            if (heading > (22.5 * 15) - 11.5 && heading < (22.5 * 16) - 11.5) CurrentAspect = "North north-west";
+            CurrentAspect = heading switch
+            {
+                < 11D or > 348.5D => "North",
+                > 11D and < 33.5D => "North north-east",
+                > 33.5D and < 56D => "North east",
+                > 56D and < 78.5D => "East north-east",
+                > 78.5D and < 101D => "East",
+                > 101D and < 123.5D => "East south-east",
+                > 123.5D and < 146D => "South east",
+                > 146D and < 168.5D => "South south-east",
+                > 168.5D and < 191D => "South",
+                > 191D and < 213.5D => "South south-west",
+                > 213.5D and < 236D => "South West",
+                > 236D and < 258.5D => "West south-west",
+                > 258.5D and < 281D => "West",
+                > 281D and < 303.5D => "West north-west",
+                > 303.5D and < 326D => "North West",
+                > 326D and < 348.5D => "North north-west",
+                _ => CurrentAspect
+            };
         }
 
         private async void btnBack_OnClick(object sender, EventArgs e)

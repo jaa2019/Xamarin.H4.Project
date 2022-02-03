@@ -20,8 +20,15 @@ namespace RealEstateApp
 
         public AboutPage()
         {
-            Accelerometer.Start(SensorSpeed.Default);
-            Accelerometer.ReadingChanged += AccelerometerDataInput;
+            try
+            {
+                Accelerometer.Start(SensorSpeed.Default);
+                Accelerometer.ReadingChanged += AccelerometerDataInput;
+            }
+            catch (Exception e)
+            {
+                DisplayAlert("Hey!", e.Message, "Ok");
+            }
             InitializeComponent();
             BindingContext = this;
         }
