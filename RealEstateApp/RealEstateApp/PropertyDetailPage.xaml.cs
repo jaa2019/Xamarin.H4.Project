@@ -4,6 +4,7 @@ using System.IO;
 using RealEstateApp.Models;
 using RealEstateApp.Services;
 using System.Linq;
+using System.Text.Json;
 using System.Threading;
 using TinyIoC;
 using Xamarin.Essentials;
@@ -151,6 +152,22 @@ namespace RealEstateApp
         private async void btnPdf_OnClick(object sender, EventArgs e)
         {
             await Launcher.OpenAsync(new OpenFileRequest { File=new ReadOnlyFile(Property.ContractFilePath)});
+        }
+
+        private async void btnShare_OnClick(object sender, EventArgs e)
+        {
+            await Share.RequestAsync(new ShareTextRequest
+            {
+                Uri = Property.NeighbourhoodUrl,
+                Subject = "A property you may be interested in!",
+                Text = $"{Property.Address}, {Property.Price:C} - and there's even {Property.Beds} bedrooms!",
+                Title = "Share property"
+            });
+        }
+
+        private void btnCopy_OnClick(object sender, EventArgs e)
+        {
+            Clipboard.SetTextAsync(JsonSerializer.Serialize(Property));
         }
     }
 }

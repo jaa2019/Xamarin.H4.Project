@@ -197,12 +197,19 @@
                            Text="{Binding Agent.Phone}" />
                 </Grid>
                 <StackLayout Grid.Column="2"
-                             Orientation="Vertical">
+                             Orientation="Horizontal">
                     <Button Clicked="btnPdf_OnClick"
                             FontFamily="FA-solid"
                             FontSize="{StaticResource ToolbarIconSize}"
                             Text="{Static fa:IconFont.FilePdf}"/>
-                    <Label Text="View contract" />
+                    <Button Clicked="btnShare_OnClick"
+                            FontFamily="FA-solid"
+                            FontSize="{StaticResource ToolbarIconSize}"
+                            Text="{Static fa:IconFont.ShareAlt}"/>
+                    <Button Clicked="btnCopy_OnClick"
+                            FontFamily="FA-solid"
+                            FontSize="{StaticResource ToolbarIconSize}"
+                            Text="{Static fa:IconFont.Clipboard}"/>
                 </StackLayout>
                 
             </Grid>
