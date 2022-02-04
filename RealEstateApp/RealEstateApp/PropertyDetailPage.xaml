@@ -10,7 +10,13 @@
              Title="{Binding Property.Address}">
 
     <ContentPage.ToolbarItems>
-        <ToolbarItem Clicked="EditProperty_Clicked" Text="Edit" />
+        <ToolbarItem Clicked="EditProperty_Clicked">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource FontFamily="FA-solid"
+                                 Glyph="{Static fa:IconFont.Edit}"
+                                 Size="{StaticResource ToolbarIconSize}" />
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
     </ContentPage.ToolbarItems>
 
     <ScrollView VerticalOptions="FillAndExpand">
@@ -96,9 +102,15 @@
                 <StackLayout Grid.Column="0"
                              Orientation="Horizontal"
                              VerticalOptions="Center">
+                    <Button Clicked="btnExLink_OnClick"
+                            HorizontalOptions="Start"
+                            VerticalOptions="Center"
+                            FontFamily="FA-solid"
+                            TextColor="Blue"
+                            Text="{Static fa:IconFont.ExternalLinkAlt}" />
                     <Label FontAttributes="Bold"
                            FontSize="14"
-                           HorizontalOptions="Start"
+                           HorizontalOptions="StartAndExpand"
                            VerticalTextAlignment="Center">
                         <Label.GestureRecognizers>
                             <TapGestureRecognizer Tapped="Description_OnTap"
@@ -109,16 +121,10 @@
                                 <Span FontFamily="FA-solid"
                                       TextColor="Blue"
                                       Text="{Static fa:IconFont.Link}" />
-                                <Span Text="Description:" />
+                                <Span Text=" Description:" />
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
-                    <Button Clicked="btnExLink_OnClick"
-                            HorizontalOptions="StartAndExpand"
-                            VerticalOptions="Center"
-                            FontFamily="FA-solid"
-                            TextColor="Blue"
-                            Text="{Static fa:IconFont.ExternalLinkAlt}" />
                 </StackLayout>
                 <Button Grid.Column="1"
                         Clicked="btnPlay_OnClick"
@@ -238,7 +244,7 @@
                 <Label HorizontalOptions="CenterAndExpand">
                     <Label.GestureRecognizers>
                         <TapGestureRecognizer
-                            Tapped="btnShare_OnClick"
+                            Tapped="btnCopy_OnClick"
                             NumberOfTapsRequired="1" />
                     </Label.GestureRecognizers>
                     <Label.FormattedText>

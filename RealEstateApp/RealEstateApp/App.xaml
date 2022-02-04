@@ -17,6 +17,44 @@
             
             <x:Double x:Key="ToolbarIconSize">25</x:Double>
             
+            <!-- BASE STYLES -->
+            <Style x:Key="BaseGrid" TargetType="Grid">
+                <Setter Property="Padding" Value="1" />
+            </Style>
+            
+            <Style x:Key="BaseBtnStyle" TargetType="Button">
+                <Setter Property="CornerRadius" Value="10" />
+                <Setter Property="TextColor" Value="Blue" />
+                <Setter Property="HorizontalOptions" Value="Center" />
+                <Setter Property="VerticalOptions" Value="Start" />
+            </Style>
+            
+            <Style x:Key="BaseImage" TargetType="Image">
+                <Setter Property="Aspect" Value="AspectFit" />
+            </Style>
+            
+            <Style x:Key="BaseLabel" TargetType="Label">
+                <Setter Property="HorizontalOptions" Value="Start" />
+                <Setter Property="VerticalOptions" Value="Center" />
+                <Setter Property="TextColor" Value="Black" />
+            </Style>
+            
+            <!-- BUTTONS -->
+            <Style TargetType="Button" BasedOn="{StaticResource BaseBtnStyle}" />
+            
+            <!-- IMAGES -->
+            <Style TargetType="Image" BasedOn="{StaticResource BaseImage}" />
+            
+            <!-- LABELS/TEXT -->
+            <Style TargetType="Label" BasedOn="{StaticResource BaseLabel}" />
+            <Style x:Key="LblLink" TargetType="Label" BasedOn="{StaticResource BaseLabel}">
+                <Setter Property="TextColor" Value="Blue" />
+                <Setter Property="TextDecorations" Value="Underline" />
+            </Style>
+            
+            <!-- GRID -->
+            <Style TargetType="Grid" BasedOn="{StaticResource BaseGrid}" />
+            
         </ResourceDictionary>
     </Application.Resources>
 </Application>
