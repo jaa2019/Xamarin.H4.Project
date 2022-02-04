@@ -42,6 +42,17 @@
             <!-- BUTTONS -->
             <Style TargetType="Button" BasedOn="{StaticResource BaseBtnStyle}" />
             
+            <Style x:Key="btnBlue" TargetType="Button" BasedOn="{StaticResource BaseBtnStyle}">
+                <Setter Property="BackgroundColor" Value="DodgerBlue" />
+                <Setter Property="TextColor" Value="Azure" />
+            </Style>
+            
+            <Style x:Key="btnRed" TargetType="Button" BasedOn="{StaticResource BaseBtnStyle}">
+                <Setter Property="BackgroundColor" Value="Red" />
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="TextColor" Value="Azure" />
+            </Style>
+            
             <!-- IMAGES -->
             <Style TargetType="Image" BasedOn="{StaticResource BaseImage}" />
             

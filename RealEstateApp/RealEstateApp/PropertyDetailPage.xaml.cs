@@ -42,10 +42,18 @@ namespace RealEstateApp
 
         private async void btnPlay_OnClick(object sender, EventArgs e)
         {
+            SpeechOptions options = new();
+            options.Pitch = (float)Preferences.Get("TTS_Pitch", 1.0);
+            options.Volume = (float)Preferences.Get("TTS_Volume", 1.0);
+            var locale = Preferences.Get("TTS_Lang", "en-US");
+            var locales = await TextToSpeech.GetLocalesAsync();
+            options.Locale = locales.FirstOrDefault(l => l.Language == locale);
             _cts = new CancellationTokenSource();
             btnPlay.IsEnabled = false;
             btnStop.IsEnabled = !btnPlay.IsEnabled;
-            await TextToSpeech.SpeakAsync(Property.Description, _cts.Token);
+            await TextToSpeech.SpeakAsync(Property.Description, options, _cts.Token);
+            btnPlay.IsEnabled = true;
+            btnStop.IsEnabled = !btnPlay.IsEnabled;
         }
 
         private async void btnStop_OnClick(object sender, EventArgs e)

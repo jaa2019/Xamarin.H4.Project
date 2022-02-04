@@ -1,35 +1,80 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8"?>
+
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              x:Class="RealEstateApp.AboutPage">
-    
-    <ContentPage.Resources>
-        <ResourceDictionary>
-            <Color x:Key="Primary">#2196F3</Color>
-            <Color x:Key="Accent">#96d1ff</Color>
-            <Color x:Key="LightTextColor">#999999</Color>
-        </ResourceDictionary>
-    </ContentPage.Resources>
-    <Grid RowDefinitions="20, 20, 20, 20, *"
-          ColumnDefinitions="*, 3*">
-        <Label Grid.Row="0" Grid.Column="0"
-               Text="X: " />
-        <Label Grid.Row="0" Grid.Column="1"
-               Text="{Binding X, StringFormat='{0:N3}'}" />
-        <Label Grid.Row="1" Grid.Column="0"
-               Text="Y: " />
-        <Label Grid.Row="1" Grid.Column="1"
-               Text="{Binding Y, StringFormat='{0:N3}'}" />
-        <Label Grid.Row="2" Grid.Column="0"
-               Text="Z: " />
-        <Label Grid.Row="2" Grid.Column="1"
-               Text="{Binding Z, StringFormat='{0:N3}'}" />
-        <Label Grid.Row="3" Grid.Column="0"
-               Text="G: " />
-        <Label Grid.Row="3" Grid.Column="1"
-               Text="{Binding G, StringFormat='{0:N3}'}" />
+    <Grid RowDefinitions="5*, 4*, *" ColumnDefinitions="*, *">
+        <TableView Grid.Row="0" Grid.ColumnSpan="2"
+                   VerticalOptions="Start" Margin="5">
+            <TableRoot>
+                <TableSection Title="Pitch: ">
+                    <ViewCell>
+                        <ViewCell.View>
+                            <Slider x:Name="PitchSlider"
+                                    HorizontalOptions="FillAndExpand"
+                                    MinimumTrackColor="DarkSlateGray" MaximumTrackColor="LightSlateGray"
+                                    ThumbColor="DarkOliveGreen"
+                                    Minimum="0" Maximum="2" 
+                                    Value="{Binding Pitch}"/>
+                        </ViewCell.View>
+                    </ViewCell>
+                    <ViewCell>
+                        <ViewCell.View>
+                            <Label TextColor="Black" 
+                                   VerticalTextAlignment="Center" 
+                                   Text="{Binding Pitch, StringFormat='{0:N2}'}" />
+                        </ViewCell.View>
+                    </ViewCell>
+                </TableSection>
+                <TableSection Title="Volume: ">
+                    <ViewCell>
+                        <ViewCell.View>
+                            <Slider x:Name="VolumeSlider"
+                                    HorizontalOptions="FillAndExpand"
+                                    MinimumTrackColor="DarkSlateGray" MaximumTrackColor="LightSlateGray"
+                                    ThumbColor="DarkOliveGreen"
+                                    Minimum="0" Maximum="1" 
+                                    Value="{Binding Volume}"/>
+                        </ViewCell.View>
+                    </ViewCell>
+                    <ViewCell>
+                        <ViewCell.View>
+                            <Label TextColor="Black" 
+                                   VerticalTextAlignment="Center" 
+                                   Text="{Binding Volume, StringFormat='{0:N2}'}" />
+                        </ViewCell.View>
+                    </ViewCell>
+                </TableSection>
+                <TableSection Title="Select language">
+                    <ViewCell>
+                        <ViewCell.View>
+                            <Picker x:Name="LangPick" 
+                                    ItemsSource="{Binding locales}"
+                                    ItemDisplayBinding="{Binding Name}"
+                                    SelectedIndexChanged="LangPick_OnSelect"
+                                    HorizontalOptions="FillAndExpand"
+                                    TextColor="Black"/>
+                        </ViewCell.View>
+                    </ViewCell>
+                </TableSection>
+            </TableRoot>
+        </TableView>
+        <ActivityIndicator Grid.Row="1" Grid.ColumnSpan="2"
+                           x:Name="SavingActivityIndicator"
+                           HorizontalOptions="Center" VerticalOptions="StartAndExpand"
+                           IsVisible="False"
+                           Color="DarkBlue"
+                           IsRunning="False" />
+        <Button Grid.Row="2" Grid.Column="0"
+                Style="{StaticResource btnBlue}"
+                Clicked="BtnSave_OnClick"
+                Text="SAVE" />
+        <Button Grid.Row="2" Grid.Column="1"
+                Style="{StaticResource btnRed}"
+                Clicked="BtnClear_OnClick"
+                Text="CLEAR" />
     </Grid>
 </ContentPage>
